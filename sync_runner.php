@@ -10,4 +10,5 @@ include __DIR__ . '/create_spec_defs.php';
 echo "\nStarting Shopify Import...\n";
 include __DIR__ . '/shopify_import.php';
 echo "Sync Complete.\n";
+file_put_contents(__DIR__ . '/last_sync.txt', date('Y-m-d H:i:s'));
 

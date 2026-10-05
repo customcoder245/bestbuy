@@ -5,6 +5,8 @@ $shopifyStore = getenv('SHOPIFY_STORE');
 $shopifyToken = getenv('SHOPIFY_ADMIN_TOKEN');
 $apiVersion   = getenv('SHOPIFY_API_VERSION') ?: '2025-01';
 
+$lastSync = file_exists(__DIR__ . '/last_sync.txt') ? file_get_contents(__DIR__ . '/last_sync.txt') : 'Never';
+
 function fetchShopifyProducts($queryStr = "", $after = "", $before = "") {
     global $shopifyStore, $shopifyToken, $apiVersion;
     $store = str_replace(['https://','http://'], '', $shopifyStore);
@@ -123,6 +125,10 @@ function buildUrl($params) {
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
             <h1 class="text-2xl font-semibold text-gray-900">Products</h1>
             <div class="flex items-center gap-4">
+                                <div class="text-xs text-gray-500 flex flex-col items-end mr-2">
+                    <span>Last Sync:</span>
+                    <span class="font-medium"><?php echo htmlspecialchars($lastSync); ?></span>
+                </div>
                 <a href="settings.php" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
                     <i class="fas fa-cog"></i> Settings
                 </a>

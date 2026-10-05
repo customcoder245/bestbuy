@@ -6,7 +6,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newSettings = [
         'tax_fee' => (float)($_POST['tax_fee'] ?? 10),
         'shipping' => (float)($_POST['shipping'] ?? 20),
-        'exchange_rate' => (float)($_POST['exchange_rate'] ?? 3595)
+        'exchange_rate' => (float)($_POST['exchange_rate'] ?? 3595),
+        'compare_at_increment' => (float)($_POST['compare_at_increment'] ?? 100000)
     ];
     file_put_contents($settingsFile, json_encode($newSettings, JSON_PRETTY_PRINT));
     
@@ -19,6 +20,7 @@ $settings = file_exists($settingsFile) ? json_decode(file_get_contents($settings
 $taxFee = $settings['tax_fee'] ?? 10;
 $shipping = $settings['shipping'] ?? 20;
 $exchangeRate = $settings['exchange_rate'] ?? 3595;
+$compareAtIncrement = $settings['compare_at_increment'] ?? 100000;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,8 +95,19 @@ $exchangeRate = $settings['exchange_rate'] ?? 3595;
                         </div>
                     </div>
                 </div>
+
+                <!-- Compare At Increment -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Compare-at Price Increment (MNT)</label>
+                    <div class="mt-1 relative rounded-md shadow-sm w-1/2">
+                        <input type="number" step="1000" id="compare_at_increment" value="<?php echo htmlspecialchars($compareAtIncrement); ?>" class="block w-full pr-12 border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 sm:text-sm border p-2">
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                            <span class="text-gray-500 sm:text-sm">MNT</span>
+                        </div>
+                    </div>
+                    <p class="mt-2 text-sm text-gray-500">Amount added to the final price to generate a fake "original" price.</p>
+                </div>
             </div>
-            
             <div class="bg-gray-50 px-6 py-4 flex justify-end">
                 <button type="button" onclick="showModal()" class="bg-black hover:bg-gray-800 text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
                     Save Settings
@@ -151,6 +164,7 @@ $exchangeRate = $settings['exchange_rate'] ?? 3595;
             data.append('tax_fee', document.getElementById('tax_fee').value);
             data.append('shipping', document.getElementById('shipping').value);
             data.append('exchange_rate', document.getElementById('exchange_rate').value);
+            data.append('compare_at_increment', document.getElementById('compare_at_increment').value);
 
             // 1. Save Settings
             fetch('settings.php', { method: 'POST', body: data })

@@ -33,6 +33,7 @@ $settings = file_exists($settingsFile) ? json_decode(file_get_contents($settings
 $taxFeePercent = (float)($settings['tax_fee'] ?? 10);
 $shippingCost  = (float)($settings['shipping'] ?? 20);
 $exchangeRate  = (float)($settings['exchange_rate'] ?? 3595);
+$compareAtIncrement = (float)($settings['compare_at_increment'] ?? 100000);
 
 $jsonFile = __DIR__ . '/bestbuy-products.json';
 if (!file_exists($jsonFile)) die("ERROR: bestbuy-products.json not found.");
@@ -80,10 +81,12 @@ do {
                 $taxAmount = $baseUsd * ($taxFeePercent / 100);
                 $totalUsd  = $baseUsd + $taxAmount + $shippingCost;
                 $priceMnt  = round($totalUsd * $exchangeRate);
+                $compareAtPriceMnt = $priceMnt + $compareAtIncrement;
                 
                 $variantsToUpdate[] = [
                     'id' => $vId,
-                    'price' => (string)$priceMnt
+                    'price' => (string)$priceMnt,
+                    'compareAtPrice' => (string)$compareAtPriceMnt
                 ];
             }
         }

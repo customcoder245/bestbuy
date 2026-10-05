@@ -124,6 +124,7 @@ function getDefaultVariantId($productId) {
 function mapVariantInput($v, $productOptions) {
     $mapped = [
         'price'         => $v['price'],
+        'compareAtPrice' => $v['compareAtPrice'] ?? null,
         'inventoryItem' => ['sku' => $v['sku'], 'tracked' => false],
     ];
     if (!empty($v['options']) && !empty($productOptions)) {
@@ -314,6 +315,14 @@ if (!$jsonData || !is_array($jsonData)) die("ERROR: Invalid JSON in $jsonFile\n"
 $validProducts = [];
 foreach ($jsonData as $item) {
     if (isset($item['error']) || empty($item['title'])) continue;
+    
+    // Discount filtering
+    $originalPrice = (float) str_replace(['$', ','], '', $item['original_price'] ?? '0');
+    $currentPrice  = (float) str_replace(['$', ','], '', $item['final_price'] ?? $item['price'] ?? '0');
+    if ($originalPrice > 0 && $originalPrice <= $currentPrice) {
+        continue;
+    }
+    
     $validProducts[] = $item;
 }
 
@@ -325,64 +334,87 @@ $createdCount  = 0;
 $skippedCount  = 0;
 $failedCount   = 0;
 
-// Pre-fetch all existing Titles from Shopify to guarantee NO duplicates
-logMsg("Fetching existing products from Shopify to prevent duplicates...");
-$existingTitles = [];
+// Pre-fetch all existing Products from Shopify to map SKUs
+logMsg("Fetching existing products from Shopify...");
+$existingProducts = []; 
 $cursor = null;
 do {
-    $q = 'query getProd($after: String) { products(first: 250, after: $after) { edges { cursor node { title } } pageInfo { hasNextPage } } }';
+    $q = 'query getProd($after: String) { products(first: 250, after: $after) { edges { cursor node { id status variants(first: 10) { edges { node { id sku } } } } } pageInfo { hasNextPage } } }';
     $resp = shopifyGraphQL($q, ['after' => $cursor]);
     $edges = $resp['data']['products']['edges'] ?? [];
     foreach ($edges as $e) {
-        if (!empty($e['node']['title'])) {
-            $existingTitles[] = trim((string)$e['node']['title']);
+        $node = $e['node'];
+        $productId = $node['id'];
+        $status = $node['status'];
+        foreach ($node['variants']['edges'] ?? [] as $vEdge) {
+            $s = trim((string)$vEdge['node']['sku']);
+            if ($s !== '') {
+                $existingProducts[$s] = ['productId' => $productId, 'variantId' => $vEdge['node']['id'], 'status' => $status];
+            }
         }
     }
     $cursor = !empty($edges) ? end($edges)['cursor'] : null;
     $hasMore = $resp['data']['products']['pageInfo']['hasNextPage'] ?? false;
 } while ($hasMore);
-$existingTitles = array_unique($existingTitles);
-logMsg("Found " . count($existingTitles) . " unique Titles already in Shopify.");
+logMsg("Found " . count($existingProducts) . " unique SKUs already in Shopify.");
 
 foreach ($validProducts as $index => $product) {
     $current = $index + 1;
     $title   = trim($product['title']);
-    $sku     = $product['product_id'] ?? $product['sku'] ?? null;
+    $sku     = trim((string)($product['product_id'] ?? $product['sku'] ?? ''));
     $brand   = $product['brand'] ?? 'Best Buy';
     $desc    = $product['description'] ?? '';
 
-    // ── Guaranteed Duplicate Check by Title ─────────────────────────────────
-    if (in_array($title, $existingTitles)) {
-        logMsg("\n[$current/$total] Skipping existing product by Title: $title");
-        $skippedCount++;
+    // Price calculation
+    $settingsFile  = __DIR__ . '/settings.json';
+    $settings      = file_exists($settingsFile) ? json_decode(file_get_contents($settingsFile), true) : [];
+    $basePrice     = $product['final_price'] ?? $product['price'] ?? 0;
+    $baseUsdNum    = (float) str_replace(['$', ','], '', $basePrice);
+    $taxFeePercent = (float)($settings['tax_fee'] ?? 10);
+    $shipping      = (float)($settings['shipping'] ?? 20);
+    $exchangeRate  = (float)($settings['exchange_rate'] ?? 3595);
+    $compareAtInc  = (float)($settings['compare_at_increment'] ?? 100000);
+    $taxAmount     = $baseUsdNum * ($taxFeePercent / 100);
+    $totalUsd      = $baseUsdNum + $taxAmount + $shipping;
+    $priceMnt      = round($totalUsd * $exchangeRate);
+    $compareAtMnt  = $priceMnt + $compareAtInc;
+
+    logMsg("\n[$current/$total] Processing: $title");
+    logMsg("   => Math: \${$baseUsdNum} + \${$taxAmount} (Tax) + \${$shipping} (Ship) = \${$totalUsd} USD -> {$priceMnt} MNT (Compare: {$compareAtMnt} MNT)");
+
+    // Guaranteed Duplicate Check by SKU
+    if ($sku !== '' && isset($existingProducts[$sku])) {
+        logMsg("   => SKU $sku already exists. Updating price & availability...");
+        $exProd = $existingProducts[$sku];
+        unset($existingProducts[$sku]);
+        
+        if (!$isDryRun) {
+            $mut = 'mutation updatePrice($productId: ID!, $variants: [ProductVariantsBulkInput!]!) { productVariantsBulkUpdate(productId: $productId, variants: $variants) { userErrors { message } } }';
+            $vars = [
+                'productId' => $exProd['productId'],
+                'variants' => [['id' => $exProd['variantId'], 'price' => (string)$priceMnt, 'compareAtPrice' => (string)$compareAtMnt]]
+            ];
+            $r = shopifyGraphQL($mut, $vars);
+            if (!empty($r['data']['productVariantsBulkUpdate']['userErrors'])) {
+                logMsg("   => Error updating price: " . json_encode($r['data']['productVariantsBulkUpdate']['userErrors']));
+            } else {
+                logMsg("   => Successfully updated price for SKU $sku.");
+                if ($exProd['status'] !== 'ACTIVE') {
+                    shopifyGraphQL('mutation pub($input: ProductInput!) { productUpdate(input: $input) { userErrors { message } } }', ['input' => ['id' => $exProd['productId'], 'status' => 'ACTIVE']]);
+                }
+            }
+        }
+        $skippedCount++; 
         continue;
     }
-    $existingTitles[] = $title; // Add it to memory so we don't duplicate it if JSON has it twice
 
-    // ── Build description ───────────────────────────────────────────────────
+    // Build description
     if (!empty($product['features']) && is_array($product['features'])) {
         $desc .= "<ul>";
         foreach ($product['features'] as $f) $desc .= "<li>" . htmlspecialchars($f) . "</li>";
         $desc .= "</ul>";
     }
 
-    // ── Price calculation ───────────────────────────────────────────────────
-    $settingsFile  = __DIR__ . '/settings.json';
-    $settings      = file_exists($settingsFile) ? json_decode(file_get_contents($settingsFile), true) : [];
-    
-    $basePrice     = $product['final_price'] ?? $product['price'] ?? 0;
-    $baseUsdNum    = (float) str_replace(['$', ','], '', $basePrice);
-    
-    $taxFeePercent = (float)($settings['tax_fee'] ?? 10);
-    $shipping      = (float)($settings['shipping'] ?? 20);
-    $exchangeRate  = (float)($settings['exchange_rate'] ?? 3595);
-    
-    $taxAmount     = $baseUsdNum * ($taxFeePercent / 100);
-    $totalUsd      = $baseUsdNum + $taxAmount + $shipping;
-    $priceMnt      = round($totalUsd * $exchangeRate);
-
-    logMsg("\n[$current/$total] Processing: $title");
-    logMsg("   => Math: \${$baseUsdNum} + \${$taxAmount} (Tax) + \${$shipping} (Ship) = \${$totalUsd} USD -> {$priceMnt} MNT");
 
     // ── Collections from breadcrumbs ────────────────────────────────────────
     $collectionGids = [];
@@ -551,6 +583,29 @@ foreach ($validProducts as $index => $product) {
     }
 
     usleep(500000); // 0.5s rate limit pause
+}
+
+
+logMsg("\nFinished processing JSON products.");
+logMsg("Checking for products that dropped out of the feed...");
+
+$toUnpublish = [];
+foreach ($existingProducts as $sku => $prod) {
+    if ($prod['status'] === 'ACTIVE') {
+        $toUnpublish[] = $prod['productId'];
+    }
+}
+
+if (!empty($toUnpublish)) {
+    logMsg("Found " . count($toUnpublish) . " active products no longer in feed. Unpublishing...");
+    if (!$isDryRun) {
+        $unpubMut = 'mutation productUpdate($input: ProductInput!) { productUpdate(input: $input) { userErrors { message } } }';
+        foreach (array_unique($toUnpublish) as $pId) {
+            shopifyGraphQL($unpubMut, ['input' => ['id' => $pId, 'status' => 'DRAFT']]);
+        }
+    }
+} else {
+    logMsg("No products to unpublish.");
 }
 
 logMsg("\nImport complete.");
