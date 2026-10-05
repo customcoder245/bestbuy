@@ -23,10 +23,16 @@ if (!$shopifyStore || !$shopifyToken) {
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function logMsg($msg) {
-    echo htmlspecialchars_decode(htmlspecialchars($msg)) . "\n";
+    $time = "[" . date('Y-m-d H:i:s') . "] ";
+    $cleanMsg = htmlspecialchars_decode(htmlspecialchars($msg));
+    // If the message starts with a newline, preserve it before the timestamp for visual formatting
+    if (str_starts_with($cleanMsg, "\n")) {
+        echo "\n" . $time . ltrim($cleanMsg, "\n") . "\n";
+    } else {
+        echo $time . $cleanMsg . "\n";
+    }
     if (ob_get_level() > 0) ob_flush();
     flush();
-    file_put_contents(__DIR__ . '/shopify_import.log', "[" . date('Y-m-d H:i:s') . "] $msg\n", FILE_APPEND);
 }
 
 function shopifyGraphQL($query, $variables = []) {
