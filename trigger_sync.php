@@ -8,7 +8,9 @@ if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
     exec("wscript.exe " . __DIR__ . "\\run_bg.vbs");
 } else {
     // Linux live server environment (Docker/Render)
-    exec("nohup php " . __DIR__ . "/sync_runner.php > /dev/null 2>&1 &");
+    // Redirect all standard output (echoes) directly into the log file so they appear in the UI
+    $logFile = __DIR__ . "/shopify_import.log";
+    exec("nohup php " . __DIR__ . "/sync_runner.php >> \"$logFile\" 2>&1 &");
 }
 
 echo json_encode(["status" => "started", "message" => "Sync process safely launched in background"]);
