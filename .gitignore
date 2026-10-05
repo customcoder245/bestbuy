@@ -1,0 +1,9 @@
+# Ignore environment variables and secrets
+.env
+
+# Ignore log files
+*.log
+
+# Ignore local datasets (optional, uncomment if you don't want them in GitHub)
+# bestbuy-products.json
+# bestbuy-filtered-products.json
