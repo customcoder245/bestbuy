@@ -126,6 +126,9 @@ function buildUrl($params) {
                 <a href="settings.php" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
                     <i class="fas fa-cog"></i> Settings
                 </a>
+                <button type="button" onclick="openLogsModal()" class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center gap-2">
+                    <i class="fas fa-terminal"></i> View Logs
+                </button>
                 <button type="button" onclick="syncProducts(this)" class="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center gap-2">
                     <i class="fas fa-sync-alt" id="sync-icon"></i> <span id="sync-text">Sync Products</span>
                 </button>
@@ -266,10 +269,61 @@ function buildUrl($params) {
         <!-- Toast Container -->
         <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3"></div>
 
+        <!-- Logs Modal -->
+        <div id="logs-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center bg-black bg-opacity-50 transition-opacity">
+            <div class="bg-[#1e1e1e] w-full max-w-4xl rounded-xl shadow-2xl flex flex-col h-[80vh] border border-gray-700">
+                <div class="px-6 py-4 border-b border-gray-700 flex justify-between items-center bg-[#2d2d2d] rounded-t-xl">
+                    <h3 class="text-lg font-semibold text-gray-200 flex items-center gap-2"><i class="fas fa-terminal text-green-400"></i> Live Sync Logs</h3>
+                    <button onclick="closeLogsModal()" class="text-gray-400 hover:text-white transition-colors">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="p-4 flex-1 overflow-auto bg-[#121212] rounded-b-xl">
+                    <pre id="logs-content" class="text-green-400 font-mono text-sm whitespace-pre-wrap leading-relaxed">Loading logs...</pre>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Scripts -->
     <script>
+        let logPollInterval = null;
+
+        function openLogsModal() {
+            document.getElementById('logs-modal').classList.remove('hidden');
+            fetchLogs(); // Fetch immediately
+            // Poll every 2 seconds
+            logPollInterval = setInterval(fetchLogs, 2000);
+        }
+
+        function closeLogsModal() {
+            document.getElementById('logs-modal').classList.add('hidden');
+            if (logPollInterval) {
+                clearInterval(logPollInterval);
+                logPollInterval = null;
+            }
+        }
+
+        async function fetchLogs() {
+            try {
+                const response = await fetch('get_logs.php');
+                const text = await response.text();
+                const container = document.getElementById('logs-content');
+                
+                // Only auto-scroll if we are currently at the bottom (or first load)
+                const isAtBottom = container.parentElement.scrollHeight - container.parentElement.scrollTop <= container.parentElement.clientHeight + 50;
+                
+                container.innerHTML = text;
+                
+                if (isAtBottom) {
+                    container.parentElement.scrollTop = container.parentElement.scrollHeight;
+                }
+            } catch (err) {
+                document.getElementById('logs-content').innerHTML = "Error fetching logs: " + err.message;
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const masterCheck = document.getElementById('selectAll');
             const rowChecks = document.querySelectorAll('.row-check');
