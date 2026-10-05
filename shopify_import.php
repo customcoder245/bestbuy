@@ -519,7 +519,7 @@ foreach ($validProducts as $index => $product) {
         'vendor'          => $brand,
         'descriptionHtml' => $desc,
         'status'          => 'ACTIVE',
-        'templateSuffix'  => 'gp-template-bk-default',
+        'templateSuffix'  => 'bestbuy-template',
         'tags'            => implode(',', $tags),
         'metafields'      => $metafields,
     ];
