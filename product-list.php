@@ -350,6 +350,9 @@ function buildUrl($params) {
             
             // Run import script in background
             fetch('trigger_sync.php');
+            
+            // Open Bright Data scraper dashboard in a new tab
+            window.open('https://brightdata.com/cp/scrapers/gd_ltre1jqe1jfr7cccf/keywords/snapshots?nav_from=my_scrapers&id=hl_c373fc90', '_blank');
 
             // Use the new toast instead of alert()
             showToast('Sync started! BestBuy scraper is running. Products will appear when the 15-minute process finishes.');
