@@ -393,7 +393,10 @@ do {
 } while ($hasMore);
 logMsg("Found " . count($existingProducts) . " unique SKUs already in Shopify.");
 
-foreach ($validProducts as $index => $product) {
+$onlineStorePubId = getOnlineStorePublicationId();
+  logMsg("Online Store Publication ID: " . ($onlineStorePubId ?: "Not found"));
+
+  foreach ($validProducts as $index => $product) {
     $current = $index + 1;
     $title   = trim($product['title']);
     $sku     = trim((string)($product['product_id'] ?? $product['sku'] ?? ''));
@@ -648,6 +651,10 @@ foreach ($validProducts as $index => $product) {
     logMsg("   => SUCCESS: Created ($productId)");
     $createdCount++;
 
+    if ($onlineStorePubId) {
+        publishProduct($productId, $onlineStorePubId);
+    }
+
     // Create options then variants
     if (!empty($optionsMap)) createProductOptions($productId, $optionsMap);
     $variantIdMap = createShopifyVariants($productId, $shopifyVariants, $productOptions);
@@ -693,3 +700,6 @@ logMsg("Skipped: $skippedCount");
 logMsg("Failed:  $failedCount");
 
 if (!$isCli) echo "</pre>";
+
+ f i l e _ p u t _ c o n t e n t s ( _ _ D I R _ _   .   ' / l a s t _ s y n c . t x t ' ,   d a t e ( ' Y - m - d   H : i : s ' ) ) ;  
+ 
