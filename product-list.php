@@ -5,7 +5,14 @@ $shopifyStore = getenv('SHOPIFY_STORE');
 $shopifyToken = getenv('SHOPIFY_ADMIN_TOKEN');
 $apiVersion   = getenv('SHOPIFY_API_VERSION') ?: '2025-01';
 
-$lastSync = file_exists(__DIR__ . '/last_sync.txt') ? file_get_contents(__DIR__ . '/last_sync.txt') : 'Never';
+$lastSync = 'Never';
+if (file_exists(__DIR__ . '/last_sync.txt')) {
+    $val = trim(file_get_contents(__DIR__ . '/last_sync.txt'));
+    if (!empty($val)) $lastSync = $val;
+}
+if ($lastSync === 'Never' && file_exists(__DIR__ . '/bestbuy-products.json')) {
+    $lastSync = date('Y-m-d H:i:s', filemtime(__DIR__ . '/bestbuy-products.json'));
+}
 
 function fetchShopifyProducts($queryStr = "", $after = "", $before = "") {
     global $shopifyStore, $shopifyToken, $apiVersion;

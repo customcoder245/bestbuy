@@ -507,40 +507,60 @@ foreach ($validProducts as $index => $product) {
     
     // Add Product Specifications Metafield
     if (!empty($product['product_specifications']) && is_array($product['product_specifications'])) {
-        $metafields[] = [
-            'namespace' => 'custom',
-            'key'       => 'product_specifications',
-            'value'     => json_encode($product['product_specifications']),
-            'type'      => 'json',
+        
+        $allowedSpecs = [
+            'screen size',
+            'touch screen',
+            'touchscreen',
+            'processor model',
+            'total storage capacity',
+            'system memory (ram)',
+            'graphics',
+            'battery life (up to)',
+            '2-in-1 design',
+            'backlit keyboard',
+            'color'
         ];
 
-        // Also add each specification as a separate metafield
+        $filteredSpecs = [];
+
         foreach ($product['product_specifications'] as $spec) {
             $specName = $spec['specification_name'] ?? '';
             $specValue = $spec['specification_value'] ?? '';
             
             if (empty($specName) || empty($specValue)) continue;
+            
+            $lowerName = strtolower(trim($specName));
+            
+            if (in_array($lowerName, $allowedSpecs)) {
+                $filteredSpecs[] = $spec;
 
-            // Clean the key (must be lowercase alphanumeric and underscores, max 64 chars)
-            $key = preg_replace('/[^a-z0-9_]/', '_', strtolower($specName));
-            $key = trim(preg_replace('/_+/', '_', $key), '_');
-            
-            if (strlen($key) > 64) {
-                $key = substr($key, 0, 64);
+                $key = preg_replace('/[^a-z0-9_]/', '_', $lowerName);
+                $key = trim(preg_replace('/_+/', '_', $key), '_');
+                if (strlen($key) > 64) $key = substr($key, 0, 64);
+                
+                $specValueStr = (string)$specValue;
+                $type = strlen($specValueStr) > 255 ? 'multi_line_text_field' : 'single_line_text_field';
+                
+                $metafields[] = [
+                    'namespace' => 'custom',
+                    'key'       => $key,
+                    'value'     => $specValueStr,
+                    'type'      => $type
+                ];
             }
-            
-            $specValueStr = (string)$specValue;
-            $type = strlen($specValueStr) > 255 ? 'multi_line_text_field' : 'single_line_text_field';
-            
+        }
+
+        if (!empty($filteredSpecs)) {
             $metafields[] = [
                 'namespace' => 'custom',
-                'key'       => $key,
-                'value'     => $specValueStr,
-                'type'      => $type
+                'key'       => 'product_specifications',
+                'value'     => json_encode($filteredSpecs),
+                'type'      => 'json',
             ];
         }
     }
-
+    
     // ── Build variants & options ────────────────────────────────────────────
     $optionsMap    = [];
     $variantsBySku = [];
