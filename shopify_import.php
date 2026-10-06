@@ -451,6 +451,29 @@ foreach ($validProducts as $index => $product) {
             'value'     => (string) $sku,
             'type'      => 'single_line_text_field',
         ];
+        
+        $metafields[] = [
+            'namespace' => 'custom',
+            'key'       => 'bestbuy_original_price_usd',
+            'value'     => (string)$originalPrice,
+            'type'      => 'single_line_text_field',
+        ];
+        
+        $metafields[] = [
+            'namespace' => 'custom',
+            'key'       => 'bestbuy_current_price_usd',
+            'value'     => (string)$currentPrice,
+            'type'      => 'single_line_text_field',
+        ];
+        
+        if (!empty($product['url'])) {
+            $metafields[] = [
+                'namespace' => 'custom',
+                'key'       => 'bestbuy_product_url',
+                'value'     => (string)$product['url'],
+                'type'      => 'url',
+            ];
+        }
     }
     
     // Add Product Specifications Metafield
@@ -528,11 +551,11 @@ foreach ($validProducts as $index => $product) {
             $optKey = implode("||", $optsList);
             if (!isset($uniqueOptions[$optKey])) {
                 $uniqueOptions[$optKey] = true;
-                $shopifyVariants[] = ['sku' => (string)$vSku, 'price' => (string)$priceMnt, 'options' => $optsList, 'variantSku' => (string)$vSku];
+                $shopifyVariants[] = ['sku' => (string)$vSku, 'price' => (string)$priceMnt, 'compareAtPrice' => (string)$compareAtMnt, 'options' => $optsList, 'variantSku' => (string)$vSku];
             }
         }
     } else {
-        $shopifyVariants[] = ['sku' => (string)$sku, 'price' => (string)$priceMnt, 'variantSku' => (string)$sku];
+        $shopifyVariants[] = ['sku' => (string)$sku, 'price' => (string)$priceMnt, 'compareAtPrice' => (string)$compareAtMnt, 'variantSku' => (string)$sku];
     }
 
     // Log variants
