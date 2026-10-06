@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // c:\Xampp\htdocs\api\shopify_import.php
 
 require_once __DIR__ . '/config.php';
@@ -279,6 +279,35 @@ function linkImageToVariant($productId, $variantId, $mediaId) {
     }
 }
 
+function getOnlineStorePublicationId() {
+    $query = 'query { publications(first: 10) { edges { node { id name } } } }';
+    $resp = shopifyGraphQL($query);
+    if (!empty($resp['data']['publications']['edges'])) {
+        foreach ($resp['data']['publications']['edges'] as $edge) {
+            if ($edge['node']['name'] === 'Online Store') {
+                return $edge['node']['id'];
+            }
+        }
+    }
+    return null;
+}
+
+function publishProduct($productId, $publicationId) {
+    if (!$publicationId) return;
+    $query = 'mutation publishablePublish($id: ID!, $input: [PublicationInput!]!) {
+      publishablePublish(id: $id, input: $input) {
+        userErrors { field message }
+      }
+    }';
+    $resp = shopifyGraphQL($query, [
+        'id' => $productId,
+        'input' => [['publicationId' => $publicationId]]
+    ]);
+    if (!empty($resp['data']['publishablePublish']['userErrors'])) {
+        logMsg("Publish Error: " . json_encode($resp['data']['publishablePublish']['userErrors']));
+    }
+}
+
 $collectionCache = []; // memory cache for collection IDs
 
 function getOrCreateCollection($title) {
@@ -424,7 +453,7 @@ foreach ($validProducts as $index => $product) {
 
     // ── Collections from breadcrumbs ────────────────────────────────────────
     $collectionGids = [];
-    $tags = [];
+    $tags = ['Захиалгаар'];
     if (!empty($product['breadcrumbs'])) {
         foreach ($product['breadcrumbs'] as $crumb) {
             $cName = $crumb['name'] ?? '';
