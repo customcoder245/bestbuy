@@ -27,7 +27,7 @@ $url = "https://" . getenv('SHOPIFY_STORE') . "/admin/api/" . getenv('SHOPIFY_AP
 $token = getenv('SHOPIFY_ADMIN_TOKEN');
 
 // Process max 200 (since 250 is the limit, leave room for other custom fields)
-$specs = array_slice($specs, 0, 200);
+$specs = array_slice($specs, 0, 245);
 
 $count = 0;
 foreach ($specs as $key => $name) {
