@@ -558,6 +558,7 @@ foreach ($validProducts as $index => $product) {
         'descriptionHtml' => $desc,
         'status'          => 'ACTIVE',
         'templateSuffix'  => 'bestbuy-template',
+        'productType'     => 'Bestbuy',
         'tags'            => implode(',', $tags),
         'metafields'      => $metafields,
     ];

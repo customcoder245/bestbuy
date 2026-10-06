@@ -60,6 +60,7 @@ foreach ($specs as $key => $name) {
     
     $response = curl_exec($ch);
     curl_close($ch);
+    usleep(600000); // Wait 0.6 seconds to avoid Shopify API Rate Limits
     
     $res = json_decode($response, true);
     if (!empty($res['data']['metafieldDefinitionCreate']['userErrors'])) {
