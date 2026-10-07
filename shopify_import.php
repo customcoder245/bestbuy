@@ -697,6 +697,5 @@ logMsg("Failed:  $failedCount");
 
 if (!$isCli) echo "</pre>";
 
- f i l e _ p u t _ c o n t e n t s ( _ _ D I R _ _   .   ' / l a s t _ s y n c . t x t ' ,   d a t e ( ' Y - m - d   H : i : s ' ) ) ; 
- 
- 
+file_put_contents(__DIR__ . '/last_sync.txt', date('Y-m-d H:i:s'));
+
