@@ -352,8 +352,8 @@ foreach ($jsonData as $item) {
     if (isset($item['error']) || empty($item['title'])) continue;
     
     // Discount filtering
-    $originalPrice = (float) str_replace(['$', ','], '', $item['original_price'] ?? '0');
-    $currentPrice  = (float) str_replace(['$', ','], '', $item['final_price'] ?? $item['price'] ?? '0');
+    $originalPrice = (float) str_replace(['$', ','], '', $item['initial_price'] ?? $item['price'] ?? '0');
+    $currentPrice  = (float) str_replace(['$', ','], '', $item['final_price'] ?? $item['sale_price'] ?? '0');
     if ($originalPrice > 0 && $originalPrice <= $currentPrice) {
         continue;
     }
@@ -406,19 +406,35 @@ $onlineStorePubId = getOnlineStorePublicationId();
     // Price calculation
     $settingsFile  = __DIR__ . '/settings.json';
     $settings      = file_exists($settingsFile) ? json_decode(file_get_contents($settingsFile), true) : [];
-    $basePrice     = $product['final_price'] ?? $product['price'] ?? 0;
-    $baseUsdNum    = (float) str_replace(['$', ','], '', $basePrice);
+    
+    $originalUsdNum = (float) str_replace(['$', ','], '', $product['initial_price'] ?? $product['price'] ?? '0');
+    $currentUsdNum  = (float) str_replace(['$', ','], '', $product['final_price'] ?? $product['sale_price'] ?? '0');
+    
     $taxFeePercent = (float)($settings['tax_fee'] ?? 10);
     $shipping      = (float)($settings['shipping'] ?? 20);
     $exchangeRate  = (float)($settings['exchange_rate'] ?? 3595);
-    $compareAtInc  = (float)($settings['compare_at_increment'] ?? 100000);
-    $taxAmount     = $baseUsdNum * ($taxFeePercent / 100);
-    $totalUsd      = $baseUsdNum + $taxAmount + $shipping;
-    $priceMnt      = round($totalUsd * $exchangeRate);
-    $compareAtMnt  = $priceMnt + $compareAtInc;
+    $compareAtInc  = (float)($settings['compare_at_increment'] ?? 100000); // 100,000 MNT markup
+    
+    // Calculate Listed Price (What the customer pays = priceMnt)
+    // Formula: (BestBuy Sale Price + Tax + Shipping) * Exchange Rate + 100,000
+    $currentTaxAmount = $currentUsdNum * ($taxFeePercent / 100);
+    $currentTotalUsd  = $currentUsdNum + $currentTaxAmount + $shipping;
+    $priceMnt         = round($currentTotalUsd * $exchangeRate) + $compareAtInc;
+    
+    // Calculate Main Price (The crossed-out original price = compareAtMnt)
+    // Formula: (BestBuy Original Price + Tax + Shipping) * Exchange Rate (NO 100,000 added here)
+    $originalTaxAmount = $originalUsdNum * ($taxFeePercent / 100);
+    $originalTotalUsd  = $originalUsdNum + $originalTaxAmount + $shipping;
+    $compareAtMnt      = round($originalTotalUsd * $exchangeRate);
+    
+    // If the original price isn't higher than our marked-up sale price, remove the discount visual
+    if ($compareAtMnt <= $priceMnt) {
+        $compareAtMnt = $priceMnt;
+    }
 
     logMsg("\n[$current/$total] Processing: $title");
-    logMsg("   => Math: \${$baseUsdNum} + \${$taxAmount} (Tax) + \${$shipping} (Ship) = \${$totalUsd} USD -> {$priceMnt} MNT (Compare: {$compareAtMnt} MNT)");
+    logMsg("   => Math (Sale): ( \${$currentUsdNum} + \${$currentTaxAmount} (Tax) + \${$shipping} (Ship) ) * {$exchangeRate} + {$compareAtInc} = {$priceMnt} MNT");
+    logMsg("   => Math (Orig): ( \${$originalUsdNum} + \${$originalTaxAmount} (Tax) + \${$shipping} (Ship) ) * {$exchangeRate} = {$compareAtMnt} MNT");
 
     // Guaranteed Duplicate Check by SKU
     if ($sku !== '' && isset($existingProducts[$sku])) {
@@ -578,56 +594,20 @@ $onlineStorePubId = getOnlineStorePublicationId();
     }
     
     // ── Build variants & options ────────────────────────────────────────────
-    $optionsMap    = [];
-    $variantsBySku = [];
+    // Client requested to remove variants entirely (Point 11).
+    // We will just create a single default variant for the main product.
+    $productOptions = [];
+    $shopifyVariants = [
+        [
+            'sku'            => (string)$sku,
+            'price'          => (string)$priceMnt,
+            'compareAtPrice' => (string)$compareAtMnt,
+            'variantSku'     => (string)$sku
+        ]
+    ];
 
-    // Also track which variant SKU -> Color value (to match with image later)
-    $variantColor  = []; // vSku => color string
-
-    if (!empty($product['variations'])) {
-        foreach ($product['variations'] as $v) {
-            $vSku   = $v['variant_sku'] ?? $sku;
-            $optName = $v['variations_name'];
-            $optVal  = $v['variations_value'];
-
-            if (!isset($optionsMap[$optName]) && count($optionsMap) < 3) {
-                $optionsMap[$optName] = [];
-            }
-            if (isset($optionsMap[$optName])) {
-                if (!in_array($optVal, $optionsMap[$optName])) $optionsMap[$optName][] = $optVal;
-                $variantsBySku[$vSku][$optName] = $optVal;
-            }
-
-            // Record color mapping
-            if (stripos($optName, 'color') !== false || stripos($optName, 'colour') !== false) {
-                $variantColor[$vSku] = strtolower($optVal);
-            }
-        }
-    }
-
-    $productOptions = array_keys($optionsMap);
-    $shopifyVariants = [];
-    $uniqueOptions   = [];
-
-    if (!empty($variantsBySku)) {
-        foreach ($variantsBySku as $vSku => $vOptions) {
-            $optsList = [];
-            foreach ($productOptions as $optName) $optsList[] = $vOptions[$optName] ?? 'Default';
-            $optKey = implode("||", $optsList);
-            if (!isset($uniqueOptions[$optKey])) {
-                $uniqueOptions[$optKey] = true;
-                $shopifyVariants[] = ['sku' => (string)$vSku, 'price' => (string)$priceMnt, 'compareAtPrice' => (string)$compareAtMnt, 'options' => $optsList, 'variantSku' => (string)$vSku];
-            }
-        }
-    } else {
-        $shopifyVariants[] = ['sku' => (string)$sku, 'price' => (string)$priceMnt, 'compareAtPrice' => (string)$compareAtMnt, 'variantSku' => (string)$sku];
-    }
-
-    // Log variants
-    foreach ($shopifyVariants as $sv) {
-        $opts = implode(" / ", $sv['options'] ?? ['Default']);
-        logMsg("   => Variant: SKU {$sv['sku']}, Options: {$opts}");
-    }
+    // Log the single variant
+    logMsg("   => Single Default Variant: SKU {$sku}");
 
     // ── Images ──────────────────────────────────────────────────────────────
     // Use full-size images only (no prescaled thumbnails)
@@ -668,9 +648,8 @@ $onlineStorePubId = getOnlineStorePublicationId();
         publishProduct($productId, $onlineStorePubId);
     }
 
-    // Create options then variants
-    if (!empty($optionsMap)) createProductOptions($productId, $optionsMap);
-    $variantIdMap = createShopifyVariants($productId, $shopifyVariants, $productOptions);
+    // Create the single default variant (this updates the auto-created Default Title variant)
+    $variantIdMap = createShopifyVariants($productId, $shopifyVariants, []);
 
     // Upload images and assign to all variants
     if (!empty($imagesToUpload)) {
