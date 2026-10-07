@@ -340,7 +340,7 @@ function getOrCreateCollection($title) {
 
 logMsg("Starting Shopify import...");
 
-$jsonFile = __DIR__ . '/bestbuy-products.json';
+$jsonFile = __DIR__ . '/bestbuy-products-test.json';
 if (!file_exists($jsonFile)) die("ERROR: $jsonFile not found.\n");
 
 $jsonData = json_decode(file_get_contents($jsonFile), true);
@@ -472,6 +472,10 @@ $onlineStorePubId = getOnlineStorePublicationId();
 
     // ── Collections from breadcrumbs ────────────────────────────────────────
     $collectionGids = [];
+    if (!$isDryRun) {
+        $bbColId = getOrCreateCollection('Bestbuy-Collection');
+        if ($bbColId) $collectionGids[] = $bbColId;
+    }
     $tags = ['Захиалгаар'];
     if (!empty($product['breadcrumbs'])) {
         foreach ($product['breadcrumbs'] as $crumb) {
