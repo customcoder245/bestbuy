@@ -340,7 +340,7 @@ function getOrCreateCollection($title) {
 
 logMsg("Starting Shopify import...");
 
-$jsonFile = __DIR__ . '/bestbuy-products-test.json';
+$jsonFile = __DIR__ . '/bestbuy-products.json';
 if (!file_exists($jsonFile)) die("ERROR: $jsonFile not found.\n");
 
 $jsonData = json_decode(file_get_contents($jsonFile), true);
