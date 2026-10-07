@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // c:\Xampp\htdocs\api\shopify_import.php
 
 require_once __DIR__ . '/config.php';
@@ -475,7 +475,20 @@ $onlineStorePubId = getOnlineStorePublicationId();
     }
 
     // ── Metafields (reset each product) ────────────────────────────────────
-    $metafields = [];
+    $metafields = [
+        [
+            'namespace' => 'theme',
+            'key'       => 'label',
+            'value'     => 'Захиалгаар',
+            'type'      => 'single_line_text_field',
+        ],
+        [
+            'namespace' => 'theme',
+            'key'       => 'label_color',
+            'value'     => '#D93A6C',
+            'type'      => 'color',
+        ]
+    ];
     if ($sku) {
         $metafields[] = [
             'namespace' => 'custom',
@@ -701,5 +714,6 @@ logMsg("Failed:  $failedCount");
 
 if (!$isCli) echo "</pre>";
 
- f i l e _ p u t _ c o n t e n t s ( _ _ D I R _ _   .   ' / l a s t _ s y n c . t x t ' ,   d a t e ( ' Y - m - d   H : i : s ' ) ) ;  
+ f i l e _ p u t _ c o n t e n t s ( _ _ D I R _ _   .   ' / l a s t _ s y n c . t x t ' ,   d a t e ( ' Y - m - d   H : i : s ' ) ) ; 
+ 
  
