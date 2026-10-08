@@ -431,19 +431,19 @@ $processedSkus = [];
     $priceMnt         = round($currentTotalUsd * $exchangeRate) + $compareAtInc;
     
     // Calculate Main Price (The crossed-out original price = compareAtMnt)
-    // Formula: (BestBuy Original Price + Tax + Shipping) * Exchange Rate (NO 100,000 added here)
+    // Formula: (BestBuy Original Price + Tax + Shipping) * Exchange Rate + 100,000
     $originalTaxAmount = $originalUsdNum * ($taxFeePercent / 100);
     $originalTotalUsd  = $originalUsdNum + $originalTaxAmount + $shipping;
-    $compareAtMnt      = round($originalTotalUsd * $exchangeRate);
+    $compareAtMnt      = round($originalTotalUsd * $exchangeRate) + $compareAtInc;
     
-    // If the original price isn't higher than our marked-up sale price, fake a 10% discount visual
+    // If the original price isn't higher than our marked-up sale price, remove the discount visual
     if ($compareAtMnt <= $priceMnt) {
-        $compareAtMnt = round($priceMnt * 1.10);
+        $compareAtMnt = $priceMnt;
     }
 
     logMsg("\n[$current/$total] Processing: $title");
     logMsg("   => Math (Sale): ( \${$currentUsdNum} + \${$currentTaxAmount} (Tax) + \${$shipping} (Ship) ) * {$exchangeRate} + {$compareAtInc} = {$priceMnt} MNT");
-    logMsg("   => Math (Orig): ( \${$originalUsdNum} + \${$originalTaxAmount} (Tax) + \${$shipping} (Ship) ) * {$exchangeRate} = {$compareAtMnt} MNT");
+    logMsg("   => Math (Orig): ( \${$originalUsdNum} + \${$originalTaxAmount} (Tax) + \${$shipping} (Ship) ) * {$exchangeRate} + {$compareAtInc} = {$compareAtMnt} MNT");
 
     // Guaranteed Duplicate Check by SKU
     if ($sku !== '' && isset($existingProducts[$sku])) {
