@@ -279,29 +279,34 @@ function linkImageToVariant($productId, $variantId, $mediaId) {
     }
 }
 
-function getOnlineStorePublicationId() {
-    $query = 'query { publications(first: 10) { edges { node { id name } } } }';
+function getAllPublicationIds() {
+    $query = 'query { publications(first: 20) { edges { node { id name } } } }';
     $resp = shopifyGraphQL($query);
+    $ids = [];
     if (!empty($resp['data']['publications']['edges'])) {
         foreach ($resp['data']['publications']['edges'] as $edge) {
-            if ($edge['node']['name'] === 'Online Store') {
-                return $edge['node']['id'];
-            }
+            $ids[] = $edge['node']['id'];
         }
     }
-    return null;
+    return $ids;
 }
 
-function publishProduct($productId, $publicationId) {
-    if (!$publicationId) return;
+function publishProductToAll($productId, $publicationIds) {
+    if (empty($publicationIds)) return;
     $query = 'mutation publishablePublish($id: ID!, $input: [PublicationInput!]!) {
       publishablePublish(id: $id, input: $input) {
         userErrors { field message }
       }
     }';
+    
+    $input = [];
+    foreach ($publicationIds as $pubId) {
+        $input[] = ['publicationId' => $pubId];
+    }
+    
     $resp = shopifyGraphQL($query, [
         'id' => $productId,
-        'input' => [['publicationId' => $publicationId]]
+        'input' => $input
     ]);
     if (!empty($resp['data']['publishablePublish']['userErrors'])) {
         logMsg("Publish Error: " . json_encode($resp['data']['publishablePublish']['userErrors']));
@@ -393,8 +398,8 @@ do {
 } while ($hasMore);
 logMsg("Found " . count($existingProducts) . " unique SKUs already in Shopify.");
 
-$onlineStorePubId = getOnlineStorePublicationId();
-  logMsg("Online Store Publication ID: " . ($onlineStorePubId ?: "Not found"));
+$allPubIds = getAllPublicationIds();
+  logMsg("Found " . count($allPubIds) . " sales channels (publications) to publish to.");
 
   foreach ($validProducts as $index => $product) {
     $current = $index + 1;
@@ -648,8 +653,8 @@ $onlineStorePubId = getOnlineStorePublicationId();
     logMsg("   => SUCCESS: Created ($productId)");
     $createdCount++;
 
-    if ($onlineStorePubId) {
-        publishProduct($productId, $onlineStorePubId);
+    if (!empty($allPubIds)) {
+        publishProductToAll($productId, $allPubIds);
     }
 
     // Create the single default variant (this updates the auto-created Default Title variant)
