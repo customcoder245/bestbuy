@@ -48,7 +48,7 @@ foreach ($specs as $key => $name) {
             'key' => $key,
             'type' => 'single_line_text_field', // Default to single line for definitions
             'ownerType' => 'PRODUCT',
-            'pin' => true
+            'pin' => false
         ]
     ];
 
@@ -71,4 +71,5 @@ foreach ($specs as $key => $name) {
     }
 }
 echo "Done!\n";
+
 
