@@ -436,9 +436,9 @@ $processedSkus = [];
     $originalTotalUsd  = $originalUsdNum + $originalTaxAmount + $shipping;
     $compareAtMnt      = round($originalTotalUsd * $exchangeRate);
     
-    // If the original price isn't higher than our marked-up sale price, remove the discount visual
+    // If the original price isn't higher than our marked-up sale price, fake a 10% discount visual
     if ($compareAtMnt <= $priceMnt) {
-        $compareAtMnt = $priceMnt;
+        $compareAtMnt = round($priceMnt * 1.10);
     }
 
     logMsg("\n[$current/$total] Processing: $title");
