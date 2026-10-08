@@ -293,24 +293,19 @@ function getAllPublicationIds() {
 }
 
 function publishProductToAll($productId, $publicationIds) {
-    if (empty($publicationIds)) return;
-    $query = 'mutation publishablePublish($id: ID!, $input: [PublicationInput!]!) {
-      publishablePublish(id: $id, input: $input) {
-        userErrors { field message }
-      }
-    }';
-    
-    $input = [];
-    foreach ($publicationIds as $pubId) {
-        $input[] = ['publicationId' => $pubId];
-    }
-    
-    $resp = shopifyGraphQL($query, [
-        'id' => $productId,
-        'input' => $input
-    ]);
-    if (!empty($resp['data']['publishablePublish']['userErrors'])) {
-        logMsg("Publish Error: " . json_encode($resp['data']['publishablePublish']['userErrors']));
+    // Extract numeric ID from gid://shopify/Product/1234567890
+    if (preg_match('/Product\/(\d+)/', $productId, $matches)) {
+        $numericId = $matches[1];
+        $url = "https://" . getenv("SHOPIFY_STORE") . "/admin/api/" . getenv("SHOPIFY_API_VERSION") . "/products/{$numericId}.json";
+        $token = getenv("SHOPIFY_ADMIN_TOKEN");
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json", "X-Shopify-Access-Token: " . $token]);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["product" => ["id" => $numericId, "published" => true]]));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_exec($ch);
+        curl_close($ch);
     }
 }
 
