@@ -402,10 +402,18 @@ logMsg("Found " . count($existingProducts) . " unique SKUs already in Shopify.")
 $allPubIds = getAllPublicationIds();
   logMsg("Found " . count($allPubIds) . " sales channels (publications) to publish to.");
 
+$processedSkus = [];
   foreach ($validProducts as $index => $product) {
     $current = $index + 1;
     $title   = trim($product['title']);
     $sku     = trim((string)($product['product_id'] ?? $product['sku'] ?? ''));
+    
+    if ($sku !== '' && isset($processedSkus[$sku])) {
+        logMsg("   => Skipping duplicate SKU in feed: $sku");
+        continue;
+    }
+    $processedSkus[$sku] = true;
+
     $brand   = $product['brand'] ?? 'Best Buy';
     $desc    = $product['description'] ?? '';
 
