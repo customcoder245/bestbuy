@@ -351,12 +351,12 @@ $validProducts = [];
 foreach ($jsonData as $item) {
     if (isset($item['error']) || empty($item['title'])) continue;
     
-    // Discount filtering
+    // Discount filtering (DISABLED per client request to allow all items)
     $originalPrice = (float) str_replace(['$', ','], '', $item['initial_price'] ?? $item['price'] ?? '0');
     $currentPrice  = (float) str_replace(['$', ','], '', $item['final_price'] ?? $item['sale_price'] ?? '0');
-    if ($originalPrice > 0 && $originalPrice <= $currentPrice) {
-        continue;
-    }
+    // if ($originalPrice > 0 && $originalPrice <= $currentPrice) {
+    //     continue;
+    // }
     
     $validProducts[] = $item;
 }
