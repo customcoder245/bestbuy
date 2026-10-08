@@ -461,6 +461,10 @@ $allPubIds = getAllPublicationIds();
                 if ($exProd['status'] !== 'ACTIVE') {
                     shopifyGraphQL('mutation pub($input: ProductInput!) { productUpdate(input: $input) { userErrors { message } } }', ['input' => ['id' => $exProd['productId'], 'status' => 'ACTIVE']]);
                 }
+                // Publish to all channels even if the product already exists
+                if (!empty($allPubIds)) {
+                    publishProductToAll($exProd['productId'], $allPubIds);
+                }
             }
         }
         $skippedCount++; 
