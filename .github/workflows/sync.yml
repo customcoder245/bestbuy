@@ -1,0 +1,29 @@
+name: BestBuy Shopify Sync
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: curl, json
+
+      - name: Create .env file from GitHub Secrets
+        run: |
+          echo "SHOPIFY_STORE=${{ secrets.SHOPIFY_STORE }}" >> .env
+          echo "SHOPIFY_ADMIN_TOKEN=${{ secrets.SHOPIFY_ADMIN_TOKEN }}" >> .env
+          echo "BRIGHT_DATA_TOKEN=${{ secrets.BRIGHT_DATA_TOKEN }}" >> .env
+          echo "BRIGHT_DATA_DATASET_ID=${{ secrets.BRIGHT_DATA_DATASET_ID }}" >> .env
+
+      - name: Run Sync Script
+        run: php sync_runner.php
+
