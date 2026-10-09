@@ -472,11 +472,10 @@ $processedSkus = [];
     $originalTotalUsd  = $originalUsdNum + $originalTaxAmount + $shipping;
     $compareAtMnt      = round($originalTotalUsd * $exchangeRate) + $compareAtInc;
     
-    // If the original price still isn't higher, we can either use 10% or just leave it.
-    // The user requested to take actual price from prev-filtered-products.json.
-    // So we'll remove the 10% fake logic. If it's not higher, we just don't show a discount.
+    // If the original price still isn't higher (meaning no native discount and no history),
+    // we generate a fake 10% discount so it always displays a crossed-out price.
     if ($compareAtMnt <= $priceMnt) {
-        $compareAtMnt = $priceMnt;
+        $compareAtMnt = round($priceMnt * 1.10);
     }
 
     logMsg("\n[$current/$total] Processing: $title");
