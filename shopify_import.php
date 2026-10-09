@@ -472,10 +472,10 @@ $processedSkus = [];
     $originalTotalUsd  = $originalUsdNum + $originalTaxAmount + $shipping;
     $compareAtMnt      = round($originalTotalUsd * $exchangeRate) + $compareAtInc;
     
-    // If the original price isn't higher (meaning no native discount and no history),
-    // we clear the compareAt price so no fake discount is shown.
+    // If the original price still isn't higher (meaning no native discount and no history),
+    // we generate a fake 10% discount so it always displays a crossed-out price.
     if ($compareAtMnt <= $priceMnt) {
-        $compareAtMnt = null;
+        $compareAtMnt = round($priceMnt * 1.10);
     }
 
     logMsg("\n[$current/$total] Processing: $title");
