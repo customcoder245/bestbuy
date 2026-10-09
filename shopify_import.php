@@ -302,7 +302,8 @@ function publishProductToAll($productId, $publicationIds) {
     // 2) REST API: Force 'published: true' to ensure the Online Store channel is active (GraphQL often blocks custom apps from this)
     if (preg_match('/Product\/(\d+)/', $productId, $matches)) {
         $numericId = $matches[1];
-        $url = "https://" . getenv("SHOPIFY_STORE") . "/admin/api/" . getenv("SHOPIFY_API_VERSION") . "/products/{$numericId}.json";
+        $store = str_replace(['https://', 'http://'], '', getenv("SHOPIFY_STORE"));
+        $url = "https://" . $store . "/admin/api/" . getenv("SHOPIFY_API_VERSION") . "/products/{$numericId}.json";
         $token = getenv("SHOPIFY_ADMIN_TOKEN");
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json", "X-Shopify-Access-Token: " . $token]);
