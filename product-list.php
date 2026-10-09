@@ -226,7 +226,7 @@ function buildUrl($params) {
                                                     <?php endif; ?>
                                                 </div>
                                                 <div class="ml-4">
-                                                    <div class="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+                                                    <div class="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors truncate max-w-xs md:max-w-md lg:max-w-lg" title="<?php echo htmlspecialchars($p['title']); ?>">
                                                         <?php echo htmlspecialchars($p['title']); ?>
                                                     </div>
                                                 </div>
