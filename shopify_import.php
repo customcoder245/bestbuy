@@ -293,7 +293,13 @@ function getAllPublicationIds() {
 }
 
 function publishProductToAll($productId, $publicationIds) {
-    // Extract numeric ID from gid://shopify/Product/1234567890
+    // 1) GraphQL: Publish to all given publication IDs (often covers POS, custom apps, etc.)
+    foreach ($publicationIds as $pubId) {
+        $mut = 'mutation pub($id: ID!, $input: [PublicationInput!]!) { publishablePublish(id: $id, input: $input) { userErrors { message } } }';
+        shopifyGraphQL($mut, ['id' => $productId, 'input' => [['publicationId' => $pubId]]]);
+    }
+
+    // 2) REST API: Force 'published: true' to ensure the Online Store channel is active (GraphQL often blocks custom apps from this)
     if (preg_match('/Product\/(\d+)/', $productId, $matches)) {
         $numericId = $matches[1];
         $url = "https://" . getenv("SHOPIFY_STORE") . "/admin/api/" . getenv("SHOPIFY_API_VERSION") . "/products/{$numericId}.json";
@@ -302,7 +308,7 @@ function publishProductToAll($productId, $publicationIds) {
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json", "X-Shopify-Access-Token: " . $token]);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["product" => ["id" => $numericId, "published" => true]]));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["product" => ["id" => $numericId, "published" => true, "published_scope" => "global"]]));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_exec($ch);
         curl_close($ch);
