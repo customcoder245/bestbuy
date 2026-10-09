@@ -395,7 +395,26 @@ do {
 logMsg("Found " . count($existingProducts) . " unique SKUs already in Shopify.");
 
 $allPubIds = getAllPublicationIds();
-  logMsg("Found " . count($allPubIds) . " sales channels (publications) to publish to.");
+logMsg("Found " . count($allPubIds) . " sales channels (publications) to publish to.");
+
+// Load prev-filtered-products.json to get historical original prices
+$prevPricesMap = [];
+$prevFile = __DIR__ . '/prev-filtered-products.json';
+if (file_exists($prevFile)) {
+    $prevData = json_decode(file_get_contents($prevFile), true);
+    if (is_array($prevData)) {
+        foreach ($prevData as $item) {
+            $pSku = trim((string)($item['product_id'] ?? $item['sku'] ?? ''));
+            if ($pSku !== '') {
+                $pOrig = (float) str_replace(['$', ','], '', $item['initial_price'] ?? $item['price'] ?? '0');
+                if ($pOrig > 0) {
+                    $prevPricesMap[$pSku] = $pOrig;
+                }
+            }
+        }
+    }
+}
+logMsg("Loaded " . count($prevPricesMap) . " historical prices from prev-filtered-products.json.");
 
 $processedSkus = [];
   foreach ($validProducts as $index => $product) {
@@ -419,6 +438,11 @@ $processedSkus = [];
     $originalUsdNum = (float) str_replace(['$', ','], '', $product['initial_price'] ?? $product['price'] ?? '0');
     $currentUsdNum  = (float) str_replace(['$', ','], '', $product['final_price'] ?? $product['sale_price'] ?? '0');
     
+    // Override with historical actual price from prev-filtered-products.json if available
+    if (isset($prevPricesMap[$sku]) && $prevPricesMap[$sku] > $originalUsdNum) {
+        $originalUsdNum = $prevPricesMap[$sku];
+    }
+    
     $taxFeePercent = (float)($settings['tax_fee'] ?? 10);
     $shipping      = (float)($settings['shipping'] ?? 20);
     $exchangeRate  = (float)($settings['exchange_rate'] ?? 3595);
@@ -436,9 +460,11 @@ $processedSkus = [];
     $originalTotalUsd  = $originalUsdNum + $originalTaxAmount + $shipping;
     $compareAtMnt      = round($originalTotalUsd * $exchangeRate) + $compareAtInc;
     
-    // If the original price isn't higher than our marked-up sale price, guarantee a 10% fake discount
+    // If the original price still isn't higher, we can either use 10% or just leave it.
+    // The user requested to take actual price from prev-filtered-products.json.
+    // So we'll remove the 10% fake logic. If it's not higher, we just don't show a discount.
     if ($compareAtMnt <= $priceMnt) {
-        $compareAtMnt = round($priceMnt * 1.10);
+        $compareAtMnt = $priceMnt;
     }
 
     logMsg("\n[$current/$total] Processing: $title");
