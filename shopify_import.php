@@ -287,7 +287,10 @@ function getAllPublicationIds() {
     if (!empty($resp['data']['publications']['edges'])) {
         foreach ($resp['data']['publications']['edges'] as $edge) {
             $ids[] = $edge['node']['id'];
+            logMsg("   => Found Publication: " . $edge['node']['name'] . " (" . $edge['node']['id'] . ")");
         }
+    } else {
+        logMsg("   => No publications found or permission denied. GraphQL Response: " . json_encode($resp));
     }
     return $ids;
 }
@@ -311,8 +314,10 @@ function publishProductToAll($productId, $publicationIds) {
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["product" => ["id" => $numericId, "published" => true, "published_scope" => "global"]]));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_exec($ch);
+        $res = curl_exec($ch);
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
+        logMsg("   => REST Publish API [$numericId]: HTTP $code - " . $res);
     }
 }
 
