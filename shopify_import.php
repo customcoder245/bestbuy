@@ -436,9 +436,9 @@ $processedSkus = [];
     $originalTotalUsd  = $originalUsdNum + $originalTaxAmount + $shipping;
     $compareAtMnt      = round($originalTotalUsd * $exchangeRate) + $compareAtInc;
     
-    // If the original price isn't higher than our marked-up sale price, remove the discount visual
+    // If the original price isn't higher than our marked-up sale price, guarantee a 10% fake discount
     if ($compareAtMnt <= $priceMnt) {
-        $compareAtMnt = $priceMnt;
+        $compareAtMnt = round($priceMnt * 1.10);
     }
 
     logMsg("\n[$current/$total] Processing: $title");
@@ -455,7 +455,7 @@ $processedSkus = [];
             $mut = 'mutation updatePrice($productId: ID!, $variants: [ProductVariantsBulkInput!]!) { productVariantsBulkUpdate(productId: $productId, variants: $variants) { userErrors { message } } }';
             $vars = [
                 'productId' => $exProd['productId'],
-                'variants' => [['id' => $exProd['variantId'], 'price' => (string)$priceMnt]]
+                'variants' => [['id' => $exProd['variantId'], 'price' => (string)$priceMnt, 'compareAtPrice' => (string)$compareAtMnt]]
             ];
             $r = shopifyGraphQL($mut, $vars);
             if (!empty($r['data']['productVariantsBulkUpdate']['userErrors'])) {
