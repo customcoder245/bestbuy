@@ -715,26 +715,7 @@ $processedSkus = [];
 
 
 logMsg("\nFinished processing JSON products.");
-logMsg("Checking for products that dropped out of the feed...");
-
-$toUnpublish = [];
-foreach ($existingProducts as $sku => $prod) {
-    if ($prod['status'] === 'ACTIVE') {
-        $toUnpublish[] = $prod['productId'];
-    }
-}
-
-if (!empty($toUnpublish)) {
-    logMsg("Found " . count($toUnpublish) . " active products no longer in feed. Unpublishing...");
-    if (!$isDryRun) {
-        $unpubMut = 'mutation productUpdate($input: ProductInput!) { productUpdate(input: $input) { userErrors { message } } }';
-        foreach (array_unique($toUnpublish) as $pId) {
-            shopifyGraphQL($unpubMut, ['input' => ['id' => $pId, 'status' => 'DRAFT']]);
-        }
-    }
-} else {
-    logMsg("No products to unpublish.");
-}
+logMsg("Automatic drafting of missing products is disabled.");
 
 logMsg("\nImport complete.");
 logMsg("Created: $createdCount");
