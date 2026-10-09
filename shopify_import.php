@@ -455,7 +455,7 @@ $processedSkus = [];
             $mut = 'mutation updatePrice($productId: ID!, $variants: [ProductVariantsBulkInput!]!) { productVariantsBulkUpdate(productId: $productId, variants: $variants) { userErrors { message } } }';
             $vars = [
                 'productId' => $exProd['productId'],
-                'variants' => [['id' => $exProd['variantId'], 'price' => (string)$priceMnt, 'compareAtPrice' => (string)$compareAtMnt]]
+                'variants' => [['id' => $exProd['variantId'], 'price' => (string)$priceMnt]]
             ];
             $r = shopifyGraphQL($mut, $vars);
             if (!empty($r['data']['productVariantsBulkUpdate']['userErrors'])) {
