@@ -472,10 +472,10 @@ $processedSkus = [];
     $originalTotalUsd  = $originalUsdNum + $originalTaxAmount + $shipping;
     $compareAtMnt      = round($originalTotalUsd * $exchangeRate) + $compareAtInc;
     
-    // If the original price still isn't higher (meaning no native discount and no history),
-    // we generate a fake 10% discount so it always displays a crossed-out price.
+    // If the original price isn't higher (meaning no native discount and no history),
+    // we clear the compareAt price so no fake discount is shown.
     if ($compareAtMnt <= $priceMnt) {
-        $compareAtMnt = round($priceMnt * 1.10);
+        $compareAtMnt = null;
     }
 
     logMsg("\n[$current/$total] Processing: $title");
@@ -492,7 +492,7 @@ $processedSkus = [];
             $mut = 'mutation updatePrice($productId: ID!, $variants: [ProductVariantsBulkInput!]!) { productVariantsBulkUpdate(productId: $productId, variants: $variants) { userErrors { message } } }';
             $vars = [
                 'productId' => $exProd['productId'],
-                'variants' => [['id' => $exProd['variantId'], 'price' => (string)$priceMnt, 'compareAtPrice' => (string)$compareAtMnt]]
+                'variants' => [['id' => $exProd['variantId'], 'price' => (string)$priceMnt, 'compareAtPrice' => $compareAtMnt ? (string)$compareAtMnt : null]]
             ];
             $r = shopifyGraphQL($mut, $vars);
             if (!empty($r['data']['productVariantsBulkUpdate']['userErrors'])) {
@@ -655,7 +655,7 @@ $processedSkus = [];
         [
             'sku'            => (string)$sku,
             'price'          => (string)$priceMnt,
-            'compareAtPrice' => (string)$compareAtMnt,
+            'compareAtPrice' => $compareAtMnt ? (string)$compareAtMnt : null,
             'variantSku'     => (string)$sku
         ]
     ];
