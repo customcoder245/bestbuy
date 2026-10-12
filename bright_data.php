@@ -54,8 +54,7 @@ $brands = [
 ];
 
 $categories = [
-    'laptop',
-    'tablet'
+    'laptop'
 ];
 
 
@@ -436,9 +435,9 @@ foreach ($products as $product) {
         continue;
     }
 
-    // Exclude monitors, desktops, TVs
+    // Exclude monitors, desktops, TVs, tablets
     $title = $product['title'] ?? $product['name'] ?? '';
-    if (preg_match('/\b(monitor|desktop|tower|all-in-one|tv|television)\b/i', (string)$title)) {
+    if (preg_match('/\b(monitor|desktop|tower|all-in-one|tv|television|tablet|ipad)\b/i', (string)$title)) {
         continue;
     }
 

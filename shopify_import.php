@@ -361,7 +361,7 @@ if (!$jsonData || !is_array($jsonData)) die("ERROR: Invalid JSON in $jsonFile\n"
 
 // Filter valid products
 $validProducts = [];
-$excludedPatterns = '/\b(monitor|desktop|tower|all-in-one|tv|television)\b/i';
+$excludedPatterns = '/\b(monitor|desktop|tower|all-in-one|tv|television|tablet|ipad)\b/i';
 
 foreach ($jsonData as $item) {
     if (isset($item['error']) || empty($item['title'])) continue;
