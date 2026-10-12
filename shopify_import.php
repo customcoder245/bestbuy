@@ -361,8 +361,15 @@ if (!$jsonData || !is_array($jsonData)) die("ERROR: Invalid JSON in $jsonFile\n"
 
 // Filter valid products
 $validProducts = [];
+$excludedPatterns = '/\b(monitor|desktop|tower|all-in-one|tv|television)\b/i';
+
 foreach ($jsonData as $item) {
     if (isset($item['error']) || empty($item['title'])) continue;
+    
+    // Exclude monitors, desktop towers, and non-laptop/tablet items
+    if (preg_match($excludedPatterns, $item['title'])) {
+        continue;
+    }
     
     // Discount filtering (DISABLED per client request to allow all items)
     $originalPrice = (float) str_replace(['$', ','], '', $item['initial_price'] ?? $item['price'] ?? '0');

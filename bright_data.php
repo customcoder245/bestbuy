@@ -436,6 +436,12 @@ foreach ($products as $product) {
         continue;
     }
 
+    // Exclude monitors, desktops, TVs
+    $title = $product['title'] ?? $product['name'] ?? '';
+    if (preg_match('/\b(monitor|desktop|tower|all-in-one|tv|television)\b/i', (string)$title)) {
+        continue;
+    }
+
     $filteredProducts[] = $product;
 }
 
