@@ -419,13 +419,22 @@ logMsg("Fetching existing products from Shopify...");
 $existingProducts = []; 
 $cursor = null;
 do {
-    $q = 'query getProd($after: String) { products(first: 250, after: $after) { edges { cursor node { id status variants(first: 10) { edges { node { id sku } } } } } pageInfo { hasNextPage } } }';
+    $q = 'query getProd($after: String) { products(first: 250, after: $after) { edges { cursor node { id title status variants(first: 10) { edges { node { id sku } } } } } pageInfo { hasNextPage } } }';
     $resp = shopifyGraphQL($q, ['after' => $cursor]);
     $edges = $resp['data']['products']['edges'] ?? [];
     foreach ($edges as $e) {
         $node = $e['node'];
         $productId = $node['id'];
         $status = $node['status'];
+        $title = $node['title'] ?? '';
+
+        // Auto-cleanup: If an excluded product (monitor, desktop, tablet, iPad) was previously imported, delete it from Shopify
+        if (!$isDryRun && preg_match($excludedPatterns, $title)) {
+            logMsg("   => Cleaning up previously imported excluded product: $title");
+            shopifyGraphQL('mutation del($id: ID!) { productDelete(input: {id: $id}) { deletedProductId } }', ['id' => $productId]);
+            continue;
+        }
+
         foreach ($node['variants']['edges'] ?? [] as $vEdge) {
             $s = trim((string)$vEdge['node']['sku']);
             if ($s !== '') {
