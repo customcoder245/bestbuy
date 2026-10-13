@@ -21,6 +21,7 @@ jobs:
         run: |
           echo "SHOPIFY_STORE=${{ secrets.SHOPIFY_STORE }}" >> .env
           echo "SHOPIFY_ADMIN_TOKEN=${{ secrets.SHOPIFY_ADMIN_TOKEN }}" >> .env
+          echo "SHOPIFY_API_VERSION=2025-01" >> .env
           echo "BRIGHT_DATA_TOKEN=${{ secrets.BRIGHT_DATA_TOKEN }}" >> .env
           echo "BRIGHT_DATA_DATASET_ID=${{ secrets.BRIGHT_DATA_DATASET_ID }}" >> .env
 

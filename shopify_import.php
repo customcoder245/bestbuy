@@ -295,29 +295,54 @@ function getAllPublicationIds() {
     return $ids;
 }
 
-function publishProductToAll($productId, $publicationIds) {
+function publishProductToAll($productId, $publicationIds = []) {
     // 1) GraphQL: Publish to all given publication IDs (often covers POS, custom apps, etc.)
-    foreach ($publicationIds as $pubId) {
-        $mut = 'mutation pub($id: ID!, $input: [PublicationInput!]!) { publishablePublish(id: $id, input: $input) { userErrors { message } } }';
-        shopifyGraphQL($mut, ['id' => $productId, 'input' => [['publicationId' => $pubId]]]);
+    if (!empty($publicationIds)) {
+        foreach ($publicationIds as $pubId) {
+            $mut = 'mutation pub($id: ID!, $input: [PublicationInput!]!) { publishablePublish(id: $id, input: $input) { userErrors { message } } }';
+            shopifyGraphQL($mut, ['id' => $productId, 'input' => [['publicationId' => $pubId]]]);
+        }
     }
 
     // 2) REST API: Force 'published: true' to ensure the Online Store channel is active (GraphQL often blocks custom apps from this)
     if (preg_match('/Product\/(\d+)/', $productId, $matches)) {
         $numericId = $matches[1];
         $store = str_replace(['https://', 'http://'], '', getenv("SHOPIFY_STORE"));
-        $url = "https://" . $store . "/admin/api/" . getenv("SHOPIFY_API_VERSION") . "/products/{$numericId}.json";
+        $ver   = getenv("SHOPIFY_API_VERSION") ?: "2025-01";
+        $url   = "https://" . $store . "/admin/api/" . $ver . "/products/{$numericId}.json";
         $token = getenv("SHOPIFY_ADMIN_TOKEN");
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json", "X-Shopify-Access-Token: " . $token]);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["product" => ["id" => $numericId, "published" => true, "published_scope" => "global"]]));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+            "product" => [
+                "id" => $numericId,
+                "published" => true,
+                "published_scope" => "global"
+            ]
+        ]));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $res = curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         logMsg("   => REST Publish API [$numericId]: HTTP $code - " . $res);
+    }
+}
+
+function addProductToCollection($collectionId, $productId) {
+    if (empty($collectionId) || empty($productId)) return;
+    $mut = 'mutation addCol($id: ID!, $productIds: [ID!]!) {
+      collectionAddProducts(id: $id, productIds: $productIds) {
+        userErrors { field message }
+      }
+    }';
+    $resp = shopifyGraphQL($mut, ['id' => $collectionId, 'productIds' => [$productId]]);
+    if (!empty($resp['data']['collectionAddProducts']['userErrors'])) {
+        $err = $resp['data']['collectionAddProducts']['userErrors'][0]['message'] ?? '';
+        logMsg("   => Note on Collection [$collectionId]: $err");
+    } else {
+        logMsg("   => Attached to collection ($collectionId)");
     }
 }
 
@@ -416,6 +441,9 @@ logMsg("Found " . count($existingProducts) . " unique SKUs already in Shopify.")
 $allPubIds = getAllPublicationIds();
 logMsg("Found " . count($allPubIds) . " sales channels (publications) to publish to.");
 
+$bbColId = getOrCreateCollection('Bestbuy-Collection');
+logMsg("Bestbuy-Collection ID: " . ($bbColId ?: 'Not found/created'));
+
 // Load prev-filtered-products.json to get historical original prices
 $prevPricesMap = [];
 $prevFile = __DIR__ . '/prev-filtered-products.json';
@@ -506,13 +534,23 @@ $processedSkus = [];
                 logMsg("   => Error updating price: " . json_encode($r['data']['productVariantsBulkUpdate']['userErrors']));
             } else {
                 logMsg("   => Successfully updated price for SKU $sku.");
-                if ($exProd['status'] !== 'ACTIVE') {
-                    shopifyGraphQL('mutation pub($input: ProductInput!) { productUpdate(input: $input) { userErrors { message } } }', ['input' => ['id' => $exProd['productId'], 'status' => 'ACTIVE']]);
+                
+                // Ensure product is active and properly tagged for collections
+                $prodUpdateInput = [
+                    'id'          => $exProd['productId'],
+                    'status'      => 'ACTIVE',
+                    'productType' => 'Bestbuy',
+                    'tags'        => ['Захиалгаар', 'Bestbuy', 'Bestbuy-Collection']
+                ];
+                shopifyGraphQL('mutation pub($input: ProductInput!) { productUpdate(input: $input) { userErrors { message } } }', ['input' => $prodUpdateInput]);
+                
+                // Attach to Bestbuy-Collection
+                if (!empty($bbColId)) {
+                    addProductToCollection($bbColId, $exProd['productId']);
                 }
-                // Publish to all channels even if the product already exists
-                if (!empty($allPubIds)) {
-                    publishProductToAll($exProd['productId'], $allPubIds);
-                }
+
+                // Publish to all channels including Online Store
+                publishProductToAll($exProd['productId'], $allPubIds);
             }
         }
         $skippedCount++; 
@@ -529,11 +567,10 @@ $processedSkus = [];
 
     // ── Collections from breadcrumbs ────────────────────────────────────────
     $collectionGids = [];
-    if (!$isDryRun) {
-        $bbColId = getOrCreateCollection('Bestbuy-Collection');
-        if ($bbColId) $collectionGids[] = $bbColId;
+    if (!$isDryRun && !empty($bbColId)) {
+        $collectionGids[] = $bbColId;
     }
-    $tags = ['Захиалгаар'];
+    $tags = ['Захиалгаар', 'Bestbuy', 'Bestbuy-Collection'];
     if (!empty($product['breadcrumbs'])) {
         foreach ($product['breadcrumbs'] as $crumb) {
             $cName = $crumb['name'] ?? '';
@@ -705,9 +742,13 @@ $processedSkus = [];
     logMsg("   => SUCCESS: Created ($productId)");
     $createdCount++;
 
-    if (!empty($allPubIds)) {
-        publishProductToAll($productId, $allPubIds);
+    // Ensure attached to Bestbuy-Collection
+    if (!empty($bbColId)) {
+        addProductToCollection($bbColId, $productId);
     }
+
+    // Publish to all channels including Online Store
+    publishProductToAll($productId, $allPubIds);
 
     // Create the single default variant (this updates the auto-created Default Title variant)
     $variantIdMap = createShopifyVariants($productId, $shopifyVariants, []);
