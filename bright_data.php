@@ -388,8 +388,17 @@ echo __DIR__ . "/bestbuy-products.json\n";
 
 
 // ---------------------------------------------------------
-// FILTER PRODUCTS
+// FILTER PRODUCTS & ENFORCE QUOTA
 // ---------------------------------------------------------
+
+$settingsFile = __DIR__ . '/settings.json';
+$settings     = file_exists($settingsFile) ? json_decode(file_get_contents($settingsFile), true) : [];
+$taxFeePercent = (float)($settings['tax_fee'] ?? 10);
+$shipping      = (float)($settings['shipping'] ?? 20);
+$exchangeRate  = (float)($settings['exchange_rate'] ?? 3595);
+$compareAtInc  = (float)($settings['compare_at_increment'] ?? 100000);
+$minPriceMnt   = 2000000; // Minimum price filter: 2,000,000 MNT
+$maxPerBrand   = 30;      // Product count limit: Max 30 products per brand (150 total)
 
 $allowedBrands = array_map(
     'strtolower',
@@ -439,17 +448,26 @@ foreach ($products as $product) {
         continue;
     }
 
+    // Minimum price filter: Remove all products priced below 2,000,000 MNT
+    $currentUsdNum = (float) str_replace(['$', ','], '', $product['final_price'] ?? $product['sale_price'] ?? $product['price'] ?? '0');
+    $currentTaxAmount = $currentUsdNum * ($taxFeePercent / 100);
+    $currentTotalUsd  = $currentUsdNum + $currentTaxAmount + $shipping;
+    $priceMnt         = round($currentTotalUsd * $exchangeRate) + $compareAtInc;
+
+    if ($priceMnt < $minPriceMnt) {
+        continue;
+    }
+
     $filteredProducts[] = $product;
 }
 
 
 // ---------------------------------------------------------
-// REMOVE DUPLICATES
-//
-// Prefer product ID / SKU when available.
+// REMOVE DUPLICATES & ENFORCE 30 PER BRAND QUOTA
 // ---------------------------------------------------------
 
 $uniqueProducts = [];
+$brandCounts    = ['dell' => 0, 'lenovo' => 0, 'hp' => 0, 'msi' => 0, 'asus' => 0];
 
 foreach ($filteredProducts as $product) {
 
@@ -460,18 +478,41 @@ foreach ($filteredProducts as $product) {
         ?? $product['url']
         ?? md5(json_encode($product));
 
-    $uniqueProducts[(string)$productId] = $product;
+    $b = strtolower(trim((string)($product['brand'] ?? $product['manufacturer'] ?? $product['vendor'] ?? '')));
+    $matched = null;
+    foreach ($allowedBrands as $allowed) {
+        if ($b === $allowed || str_contains($b, $allowed)) {
+            $matched = $allowed;
+            break;
+        }
+    }
+    if (!$matched) continue;
+
+    if (!isset($uniqueProducts[(string)$productId])) {
+        if ($brandCounts[$matched] < $maxPerBrand) {
+            $uniqueProducts[(string)$productId] = $product;
+            $brandCounts[$matched]++;
+        }
+    }
 }
 
 $filteredProducts = array_values($uniqueProducts);
 
 
 // ---------------------------------------------------------
-// SAVE FILTERED DATA
+// SAVE FILTERED DATA (CAPPED AT 150)
 // ---------------------------------------------------------
 
 file_put_contents(
     __DIR__ . '/bestbuy-filtered-products.json',
+    json_encode(
+        $filteredProducts,
+        JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+    )
+);
+
+file_put_contents(
+    __DIR__ . '/bestbuy-products.json',
     json_encode(
         $filteredProducts,
         JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES

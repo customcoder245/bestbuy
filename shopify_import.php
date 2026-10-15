@@ -374,6 +374,17 @@ function getOrCreateCollection($title) {
     return $id;
 }
 
+function calculateMntPrice($item, $settings) {
+    $currentUsdNum = (float) str_replace(['$', ','], '', $item['final_price'] ?? $item['sale_price'] ?? '0');
+    $taxFeePercent = (float)($settings['tax_fee'] ?? 10);
+    $shipping      = (float)($settings['shipping'] ?? 20);
+    $exchangeRate  = (float)($settings['exchange_rate'] ?? 3595);
+    $compareAtInc  = (float)($settings['compare_at_increment'] ?? 100000);
+    $currentTaxAmount = $currentUsdNum * ($taxFeePercent / 100);
+    $currentTotalUsd  = $currentUsdNum + $currentTaxAmount + $shipping;
+    return round($currentTotalUsd * $exchangeRate) + $compareAtInc;
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 logMsg("Starting Shopify import...");
@@ -384,23 +395,31 @@ if (!file_exists($jsonFile)) die("ERROR: $jsonFile not found.\n");
 $jsonData = json_decode(file_get_contents($jsonFile), true);
 if (!$jsonData || !is_array($jsonData)) die("ERROR: Invalid JSON in $jsonFile\n");
 
+$settingsFile = __DIR__ . '/settings.json';
+$settings     = file_exists($settingsFile) ? json_decode(file_get_contents($settingsFile), true) : [];
+$minPriceMnt  = 2000000; // Minimum price filter: Remove products below 2,000,000 MNT
+$maxPerBrand  = 30;      // Product count limit: Max 30 products per brand (30 x 5 = 150)
+
 // Filter valid products: strictly restricted to 5 allowed brands
 $allowedBrands = ['dell', 'lenovo', 'hp', 'msi', 'asus'];
 $excludedPatterns = '/\b(monitor|desktop|tower|all-in-one|tv|television|tablet|tablets|tab|ipad|fire|headphone|headphones|headset|earbud|earbuds|buds|watch)\b/i';
+
+$validProducts = [];
+$brandCounts   = ['dell' => 0, 'lenovo' => 0, 'hp' => 0, 'msi' => 0, 'asus' => 0];
 
 foreach ($jsonData as $item) {
     if (isset($item['error']) || empty($item['title'])) continue;
     
     // Check Brand: Must be strictly one of Dell, Lenovo, HP, MSI, ASUS
     $itemBrand = strtolower(trim((string)($item['brand'] ?? $item['manufacturer'] ?? $item['vendor'] ?? '')));
-    $brandMatched = false;
+    $matchedBrandKey = null;
     foreach ($allowedBrands as $allowed) {
         if ($itemBrand === $allowed || str_contains($itemBrand, $allowed)) {
-            $brandMatched = true;
+            $matchedBrandKey = $allowed;
             break;
         }
     }
-    if (!$brandMatched) {
+    if (!$matchedBrandKey) {
         continue;
     }
 
@@ -408,19 +427,24 @@ foreach ($jsonData as $item) {
     if (preg_match($excludedPatterns, $item['title'])) {
         continue;
     }
-    
-    // Discount filtering (DISABLED per client request to allow all items)
-    $originalPrice = (float) str_replace(['$', ','], '', $item['initial_price'] ?? $item['price'] ?? '0');
-    $currentPrice  = (float) str_replace(['$', ','], '', $item['final_price'] ?? $item['sale_price'] ?? '0');
-    // if ($originalPrice > 0 && $originalPrice <= $currentPrice) {
-    //     continue;
-    // }
-    
+
+    // Minimum price filter: Must be at least 2,000,000 MNT
+    $itemMntPrice = calculateMntPrice($item, $settings);
+    if ($itemMntPrice < $minPriceMnt) {
+        continue;
+    }
+
+    // Product count limit: Maximum 30 products per brand
+    if ($brandCounts[$matchedBrandKey] >= $maxPerBrand) {
+        continue;
+    }
+
+    $brandCounts[$matchedBrandKey]++;
     $validProducts[] = $item;
 }
 
 $total = count($validProducts);
-logMsg("Found $total products.");
+logMsg("Found $total products matching filters (5 brands, >= 2M MNT, max 30/brand: " . json_encode($brandCounts) . ").");
 if ($isDryRun) logMsg("\n--- DRY RUN MODE ---");
 
 $createdCount  = 0;
@@ -432,7 +456,7 @@ logMsg("Fetching existing products from Shopify...");
 $existingProducts = []; 
 $cursor = null;
 do {
-    $q = 'query getProd($after: String) { products(first: 250, after: $after) { edges { cursor node { id title vendor productType templateSuffix status variants(first: 10) { edges { node { id sku } } } } } pageInfo { hasNextPage } } }';
+    $q = 'query getProd($after: String) { products(first: 250, after: $after) { edges { cursor node { id title vendor productType templateSuffix status variants(first: 10) { edges { node { id sku price } } } } } pageInfo { hasNextPage } } }';
     $resp = shopifyGraphQL($q, ['after' => $cursor]);
     $edges = $resp['data']['products']['edges'] ?? [];
     foreach ($edges as $e) {
@@ -448,12 +472,15 @@ do {
             || ($tmpl === 'bestbuy-template')
             || ($tmpl === 'gp-template-bk-default');
 
-        // Auto-cleanup: If an excluded product (tablet, monitor, etc.) or non-allowed brand was imported for Best Buy, delete it from Shopify
+        // Auto-cleanup: If an excluded product (tablet, monitor, etc.), non-allowed brand, or price < 2M MNT was imported for Best Buy, delete it from Shopify
         if (!$isDryRun && $isBestBuyItem) {
             $isExcludedTitle = preg_match($excludedPatterns, $title);
             $isAllowedBrand = in_array($vendor, $allowedBrands);
-            if ($isExcludedTitle || !$isAllowedBrand) {
-                logMsg("   => Auto-cleaning unwanted Best Buy product: $title (Vendor: " . ($node['vendor'] ?? '') . ")");
+            $firstVariantPrice = (float)($node['variants']['edges'][0]['node']['price'] ?? 0);
+            $isUnderMinPrice = ($firstVariantPrice > 0 && $firstVariantPrice < $minPriceMnt);
+
+            if ($isExcludedTitle || !$isAllowedBrand || $isUnderMinPrice) {
+                logMsg("   => Auto-cleaning unwanted Best Buy product: $title (Vendor: " . ($node['vendor'] ?? '') . ", Price: $firstVariantPrice MNT)");
                 shopifyGraphQL('mutation del($id: ID!) { productDelete(input: {id: $id}) { deletedProductId } }', ['id' => $productId]);
                 continue;
             }
@@ -522,6 +549,8 @@ $processedSkus = [];
     if (isset($prevPricesMap[$sku]) && $prevPricesMap[$sku] > $originalUsdNum) {
         $originalUsdNum = $prevPricesMap[$sku];
     }
+    $originalPrice = $originalUsdNum;
+    $currentPrice  = $currentUsdNum;
     
     $taxFeePercent = (float)($settings['tax_fee'] ?? 10);
     $shipping      = (float)($settings['shipping'] ?? 20);
@@ -816,6 +845,45 @@ $processedSkus = [];
 
 logMsg("\nFinished processing JSON products.");
 logMsg("Automatic drafting of missing products is disabled.");
+
+// ─── Post-Sync Quota Enforcement (Strictly Max 30 per brand in Shopify) ────────
+if (!$isDryRun) {
+    logMsg("\nVerifying 30-product quota per brand in Shopify store...");
+    $storeBbByBrand = ['dell' => [], 'lenovo' => [], 'hp' => [], 'msi' => [], 'asus' => []];
+    $checkCursor = null;
+    do {
+        $q = 'query getBbProds($after: String) { products(first: 250, after: $after, query: "product_type:Bestbuy") { edges { cursor node { id title vendor createdAt } } pageInfo { hasNextPage } } }';
+        $r = shopifyGraphQL($q, ['after' => $checkCursor]);
+        $edges = $r['data']['products']['edges'] ?? [];
+        foreach ($edges as $e) {
+            $node = $e['node'];
+            $v = strtolower(trim((string)($node['vendor'] ?? '')));
+            foreach ($allowedBrands as $b) {
+                if ($v === $b || str_contains($v, $b)) {
+                    $storeBbByBrand[$b][] = $node;
+                    break;
+                }
+            }
+        }
+        $checkCursor = !empty($edges) ? end($edges)['cursor'] : null;
+        $hasMore = $r['data']['products']['pageInfo']['hasNextPage'] ?? false;
+    } while ($hasMore);
+
+    foreach ($storeBbByBrand as $b => $items) {
+        $bCount = count($items);
+        logMsg("   => Brand " . strtoupper($b) . ": $bCount products in Shopify");
+        if ($bCount > $maxPerBrand) {
+            // Sort by createdAt descending (keep newest 30, delete oldest excess)
+            usort($items, fn($a, $bItem) => strcmp($bItem['createdAt'] ?? '', $a['createdAt'] ?? ''));
+            $excess = array_slice($items, $maxPerBrand);
+            foreach ($excess as $exProd) {
+                logMsg("   => Deleting excess product beyond 30 quota: [{$exProd['vendor']}] {$exProd['title']}");
+                shopifyGraphQL('mutation del($id: ID!) { productDelete(input: {id: $id}) { deletedProductId } }', ['id' => $exProd['id']]);
+                usleep(250000);
+            }
+        }
+    }
+}
 
 logMsg("\nImport complete.");
 logMsg("Created: $createdCount");
