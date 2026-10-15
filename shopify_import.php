@@ -544,12 +544,20 @@ $processedSkus = [];
             } else {
                 logMsg("   => Successfully updated price for SKU $sku.");
                 
-                // Ensure product is active and properly tagged for collections
+                // Ensure product is active and properly tagged for collections, and hidden from global search & sitemap
                 $prodUpdateInput = [
                     'id'          => $exProd['productId'],
                     'status'      => 'ACTIVE',
                     'productType' => 'Bestbuy',
-                    'tags'        => ['Захиалгаар', 'Bestbuy', 'Bestbuy-Collection']
+                    'tags'        => ['Захиалгаар', 'Bestbuy', 'Bestbuy-Collection'],
+                    'metafields'  => [
+                        [
+                            'namespace' => 'seo',
+                            'key'       => 'hidden',
+                            'value'     => '1',
+                            'type'      => 'number_integer'
+                        ]
+                    ]
                 ];
                 shopifyGraphQL('mutation pub($input: ProductInput!) { productUpdate(input: $input) { userErrors { message } } }', ['input' => $prodUpdateInput]);
                 
@@ -610,6 +618,12 @@ $processedSkus = [];
             'key'       => 'label_color',
             'value'     => '#D93A6C',
             'type'      => 'color',
+        ],
+        [
+            'namespace' => 'seo',
+            'key'       => 'hidden',
+            'value'     => '1',
+            'type'      => 'number_integer',
         ]
     ];
     if ($sku) {
