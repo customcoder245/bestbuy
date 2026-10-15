@@ -1,7 +1,10 @@
 name: BestBuy Shopify Sync
 on:
   schedule:
-    - cron: '0 */12 * * *'
+    - cron: '0 1 * * *'    # 09:00 Asia/Ulaanbaatar (UTC+8)
+    - cron: '10 6 * * *'   # 14:10 Asia/Ulaanbaatar (UTC+8)
+    - cron: '30 10 * * *'  # 18:30 Asia/Ulaanbaatar (UTC+8)
+    - cron: '50 14 * * *'  # 22:50 Asia/Ulaanbaatar (UTC+8)
   workflow_dispatch: # Allows manual trigger
 
 jobs:
