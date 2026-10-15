@@ -384,14 +384,27 @@ if (!file_exists($jsonFile)) die("ERROR: $jsonFile not found.\n");
 $jsonData = json_decode(file_get_contents($jsonFile), true);
 if (!$jsonData || !is_array($jsonData)) die("ERROR: Invalid JSON in $jsonFile\n");
 
-// Filter valid products
-$validProducts = [];
-$excludedPatterns = '/\b(monitor|desktop|tower|all-in-one|tv|television|tablet|ipad)\b/i';
+// Filter valid products: strictly restricted to 5 allowed brands
+$allowedBrands = ['dell', 'lenovo', 'hp', 'msi', 'asus'];
+$excludedPatterns = '/\b(monitor|desktop|tower|all-in-one|tv|television|tablet|tablets|tab|ipad|fire|headphone|headphones|headset|earbud|earbuds|buds|watch)\b/i';
 
 foreach ($jsonData as $item) {
     if (isset($item['error']) || empty($item['title'])) continue;
     
-    // Exclude monitors, desktop towers, and non-laptop/tablet items
+    // Check Brand: Must be strictly one of Dell, Lenovo, HP, MSI, ASUS
+    $itemBrand = strtolower(trim((string)($item['brand'] ?? $item['manufacturer'] ?? $item['vendor'] ?? '')));
+    $brandMatched = false;
+    foreach ($allowedBrands as $allowed) {
+        if ($itemBrand === $allowed || str_contains($itemBrand, $allowed)) {
+            $brandMatched = true;
+            break;
+        }
+    }
+    if (!$brandMatched) {
+        continue;
+    }
+
+    // Exclude monitors, desktop towers, tablets, headphones, and accessories
     if (preg_match($excludedPatterns, $item['title'])) {
         continue;
     }
@@ -419,7 +432,7 @@ logMsg("Fetching existing products from Shopify...");
 $existingProducts = []; 
 $cursor = null;
 do {
-    $q = 'query getProd($after: String) { products(first: 250, after: $after) { edges { cursor node { id title status variants(first: 10) { edges { node { id sku } } } } } pageInfo { hasNextPage } } }';
+    $q = 'query getProd($after: String) { products(first: 250, after: $after) { edges { cursor node { id title vendor productType templateSuffix status variants(first: 10) { edges { node { id sku } } } } } pageInfo { hasNextPage } } }';
     $resp = shopifyGraphQL($q, ['after' => $cursor]);
     $edges = $resp['data']['products']['edges'] ?? [];
     foreach ($edges as $e) {
@@ -427,12 +440,23 @@ do {
         $productId = $node['id'];
         $status = $node['status'];
         $title = $node['title'] ?? '';
+        $vendor = strtolower(trim((string)($node['vendor'] ?? '')));
+        $prodType = $node['productType'] ?? '';
+        $tmpl = $node['templateSuffix'] ?? '';
 
-        // Auto-cleanup: If an excluded product (monitor, desktop, tablet, iPad) was previously imported, delete it from Shopify
-        if (!$isDryRun && preg_match($excludedPatterns, $title)) {
-            logMsg("   => Cleaning up previously imported excluded product: $title");
-            shopifyGraphQL('mutation del($id: ID!) { productDelete(input: {id: $id}) { deletedProductId } }', ['id' => $productId]);
-            continue;
+        $isBestBuyItem = ($prodType === 'Bestbuy')
+            || ($tmpl === 'bestbuy-template')
+            || ($tmpl === 'gp-template-bk-default');
+
+        // Auto-cleanup: If an excluded product (tablet, monitor, etc.) or non-allowed brand was imported for Best Buy, delete it from Shopify
+        if (!$isDryRun && $isBestBuyItem) {
+            $isExcludedTitle = preg_match($excludedPatterns, $title);
+            $isAllowedBrand = in_array($vendor, $allowedBrands);
+            if ($isExcludedTitle || !$isAllowedBrand) {
+                logMsg("   => Auto-cleaning unwanted Best Buy product: $title (Vendor: " . ($node['vendor'] ?? '') . ")");
+                shopifyGraphQL('mutation del($id: ID!) { productDelete(input: {id: $id}) { deletedProductId } }', ['id' => $productId]);
+                continue;
+            }
         }
 
         foreach ($node['variants']['edges'] ?? [] as $vEdge) {
@@ -544,13 +568,14 @@ $processedSkus = [];
             } else {
                 logMsg("   => Successfully updated price for SKU $sku.");
                 
-                // Ensure product is active and properly tagged for collections, and hidden from global search & sitemap
+                // Ensure product is active and properly tagged for collections, has correct template, and hidden from global search & sitemap
                 $prodUpdateInput = [
-                    'id'          => $exProd['productId'],
-                    'status'      => 'ACTIVE',
-                    'productType' => 'Bestbuy',
-                    'tags'        => ['Захиалгаар', 'Bestbuy', 'Bestbuy-Collection'],
-                    'metafields'  => [
+                    'id'             => $exProd['productId'],
+                    'status'         => 'ACTIVE',
+                    'productType'    => 'Bestbuy',
+                    'templateSuffix' => 'bestbuy-template',
+                    'tags'           => ['Захиалгаар', 'Bestbuy', 'Bestbuy-Collection'],
+                    'metafields'     => [
                         [
                             'namespace' => 'seo',
                             'key'       => 'hidden',

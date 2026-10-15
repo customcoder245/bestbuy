@@ -8,3 +8,7 @@
 # bestbuy-products.json
 # bestbuy-filtered-products.json
 last_sync.txt
+
+# Local backups
+theme_backup/
+

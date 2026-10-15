@@ -44,13 +44,11 @@ $INPUT_MODE = 'keyword';
 $keywords = [];
 
 $brands = [
-    'Apple',
     'Dell',
     'Lenovo',
+    'HP',
     'MSI',
-    'ASUS',
-    'Acer',
-    'HP'
+    'ASUS'
 ];
 
 $categories = [
@@ -435,9 +433,9 @@ foreach ($products as $product) {
         continue;
     }
 
-    // Exclude monitors, desktops, TVs, tablets
+    // Exclude monitors, desktops, TVs, tablets, headphones, and accessories
     $title = $product['title'] ?? $product['name'] ?? '';
-    if (preg_match('/\b(monitor|desktop|tower|all-in-one|tv|television|tablet|ipad)\b/i', (string)$title)) {
+    if (preg_match('/\b(monitor|desktop|tower|all-in-one|tv|television|tablet|tablets|tab|ipad|fire|headphone|headphones|headset|earbud|earbuds|buds|watch)\b/i', (string)$title)) {
         continue;
     }
 
