@@ -570,9 +570,9 @@ $processedSkus = [];
     $compareAtMnt      = round($originalTotalUsd * $exchangeRate) + $compareAtInc;
     
     // If the original price still isn't higher (meaning no native discount and no history),
-    // we generate a fake 10% discount so it always displays a crossed-out price.
+    // only real Best Buy discounts will display a crossed-out price.
     if ($compareAtMnt <= $priceMnt) {
-        $compareAtMnt = round($priceMnt * 1.10);
+        $compareAtMnt = null;
     }
 
     logMsg("\n[$current/$total] Processing: $title");
