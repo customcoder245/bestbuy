@@ -405,6 +405,7 @@ $allowedBrands = ['dell', 'lenovo', 'hp', 'msi', 'asus'];
 $excludedPatterns = '/\b(monitor|desktop|tower|all-in-one|tv|television|tablet|tablets|tab|ipad|fire|headphone|headphones|headset|earbud|earbuds|buds|watch)\b/i';
 
 $validProducts = [];
+$underMinSkus  = [];
 $brandCounts   = ['dell' => 0, 'lenovo' => 0, 'hp' => 0, 'msi' => 0, 'asus' => 0];
 
 foreach ($jsonData as $item) {
@@ -431,6 +432,8 @@ foreach ($jsonData as $item) {
     // Minimum price filter: Must be at least 2,000,000 MNT
     $itemMntPrice = calculateMntPrice($item, $settings);
     if ($itemMntPrice < $minPriceMnt) {
+        $uSku = trim((string)($item['product_id'] ?? $item['sku'] ?? ''));
+        if ($uSku !== '') $underMinSkus[$uSku] = $itemMntPrice;
         continue;
     }
 
@@ -477,7 +480,8 @@ do {
             $isExcludedTitle = preg_match($excludedPatterns, $title);
             $isAllowedBrand = in_array($vendor, $allowedBrands);
             $firstVariantPrice = (float)($node['variants']['edges'][0]['node']['price'] ?? 0);
-            $isUnderMinPrice = ($firstVariantPrice > 0 && $firstVariantPrice < $minPriceMnt);
+            $firstVariantSku   = trim((string)($node['variants']['edges'][0]['node']['sku'] ?? ''));
+            $isUnderMinPrice   = ($firstVariantPrice > 0 && $firstVariantPrice < $minPriceMnt) || isset($underMinSkus[$firstVariantSku]);
 
             if ($isExcludedTitle || !$isAllowedBrand || $isUnderMinPrice) {
                 logMsg("   => Auto-cleaning unwanted Best Buy product: $title (Vendor: " . ($node['vendor'] ?? '') . ", Price: $firstVariantPrice MNT)");
@@ -545,10 +549,7 @@ $processedSkus = [];
     $originalUsdNum = (float) str_replace(['$', ','], '', $product['initial_price'] ?? $product['price'] ?? '0');
     $currentUsdNum  = (float) str_replace(['$', ','], '', $product['final_price'] ?? $product['sale_price'] ?? '0');
     
-    // Override with historical actual price from prev-filtered-products.json if available
-    if (isset($prevPricesMap[$sku]) && $prevPricesMap[$sku] > $originalUsdNum) {
-        $originalUsdNum = $prevPricesMap[$sku];
-    }
+    // Strictly use live Best Buy initial_price (do not override with historical prev-filtered-products.json)
     $originalPrice = $originalUsdNum;
     $currentPrice  = $currentUsdNum;
     

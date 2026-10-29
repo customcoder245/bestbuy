@@ -211,23 +211,48 @@ function curlRequest(
 
 echo "Starting Bright Data collection...\n";
 
+$existingFile = __DIR__ . '/bestbuy-products.json';
+$existingCatalog = [];
+if (file_exists($existingFile)) {
+    $decodedExisting = json_decode((string)file_get_contents($existingFile), true);
+    if (is_array($decodedExisting) && !isset($decodedExisting['status'])) {
+        $existingCatalog = $decodedExisting;
+    }
+}
 
-	
+$urlInputs = [];
+$seenCleanUrls = [];
+foreach ($existingCatalog as $existingItem) {
+    $rawUrl = trim((string)($existingItem['url'] ?? ''));
+    if ($rawUrl === '') continue;
+    $cleanUrl = preg_replace('#/openbox.*$#i', '', $rawUrl);
+    if ($cleanUrl !== '' && !isset($seenCleanUrls[$cleanUrl])) {
+        $seenCleanUrls[$cleanUrl] = true;
+        $urlInputs[] = ['url' => $cleanUrl];
+    }
+}
+
 $headers = [
     'Authorization: Bearer '.$BRIGHT_DATA_TOKEN,
     'Content-Type: application/json',
 ];
 
+$ch = curl_init();
 
-$data = json_encode([
-    'input' => $keywords,
-    'limit_per_input' => 35
-]);	
-	
-	
-	$ch = curl_init();
+if (!empty($urlInputs)) {
+    echo "Scraping " . count($urlInputs) . " existing store product URLs directly for 100% price accuracy...\n";
+    $data = json_encode($urlInputs, JSON_UNESCAPED_SLASHES);
+    $triggerEndpoint = 'https://api.brightdata.com/datasets/v3/trigger?dataset_id='.$DATASET_ID.'&notify=false&include_errors=true';
+} else {
+    echo "No existing store URLs found; running keyword discovery...\n";
+    $data = json_encode([
+        'input' => $keywords,
+        'limit_per_input' => 35
+    ]);
+    $triggerEndpoint = 'https://api.brightdata.com/datasets/v3/trigger?dataset_id='.$DATASET_ID.'&notify=false&include_errors=true&type=discover_new&discover_by=keywords';
+}
 
-curl_setopt($ch, CURLOPT_URL, 'https://api.brightdata.com/datasets/v3/trigger?dataset_id='.$DATASET_ID.'&notify=false&include_errors=true&type=discover_new&discover_by=keywords');
+curl_setopt($ch, CURLOPT_URL, $triggerEndpoint);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -370,6 +395,41 @@ if (!is_array($products) || isset($products['status'])) {
     die("ERROR: Product data is not an array.\n");
 }
 
+// Merge fresh URL scrape results back into existing catalog (matching by base URL & SKU so Shopify SKUs never drift)
+if (!empty($existingCatalog)) {
+    $freshByBaseUrl = [];
+    $freshBySku = [];
+    foreach ($products as $p) {
+        if (!is_array($p) || !empty($p['error'])) continue;
+        $u = (string)($p['input']['url'] ?? $p['url'] ?? '');
+        $baseU = preg_replace('#(/sku/\d+.*|/openbox.*)$#i', '', $u);
+        if ($baseU !== '') {
+            $freshByBaseUrl[$baseU] = $p;
+        }
+        $s = (string)($p['product_id'] ?? $p['sku'] ?? '');
+        if ($s !== '') {
+            $freshBySku[$s] = $p;
+        }
+    }
+    $mergedProducts = [];
+    foreach ($existingCatalog as $orig) {
+        $origSku = (string)($orig['product_id'] ?? $orig['sku'] ?? '');
+        $origUrl = (string)($orig['url'] ?? '');
+        $baseOrigUrl = preg_replace('#(/sku/\d+.*|/openbox.*)$#i', '', $origUrl);
+        $fresh = $freshByBaseUrl[$baseOrigUrl] ?? $freshBySku[$origSku] ?? null;
+        if ($fresh) {
+            $merged = array_merge($orig, $fresh);
+            $merged['product_id'] = $origSku;
+            $merged['sku'] = $origSku;
+            $merged['url'] = preg_replace('#/openbox.*$#i', '', $origUrl);
+            $mergedProducts[] = $merged;
+        } else {
+            $mergedProducts[] = $orig;
+        }
+    }
+    $products = $mergedProducts;
+}
+
 
 // ---------------------------------------------------------
 // SAVE RAW DATA
@@ -505,14 +565,6 @@ $filteredProducts = array_values($uniqueProducts);
 
 file_put_contents(
     __DIR__ . '/bestbuy-filtered-products.json',
-    json_encode(
-        $filteredProducts,
-        JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
-    )
-);
-
-file_put_contents(
-    __DIR__ . '/bestbuy-products.json',
     json_encode(
         $filteredProducts,
         JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
