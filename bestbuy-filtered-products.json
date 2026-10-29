@@ -5936,28 +5936,28 @@
         ],
         "q_a": [
             {
-                "question": "Is the keyboard on this laptop backlit?",
-                "answer": "No, the keyboard on this laptop is not backlit."
+                "question": "Does this laptop support wireless connectivity?",
+                "answer": "Yes, the laptop supports Wi-Fi 6E and Bluetooth 5.3 for wireless connectivity."
             },
             {
-                "question": "Can I use this laptop to record lectures?",
-                "answer": "Yes, the laptop includes Otter.ai, which can record lectures, capture slides, and generate summaries automatically."
+                "question": "Is the keyboard on this laptop backlit?",
+                "answer": "No, the keyboard on this laptop is not backlit."
             },
             {
                 "question": "How much memory does this laptop have for multitasking?",
                 "answer": "This laptop features 16GB of memory to help you run multiple apps and tasks at once."
             },
             {
-                "question": "Does this laptop support wireless connectivity?",
-                "answer": "Yes, the laptop supports Wi-Fi 6E and Bluetooth 5.3 for wireless connectivity."
+                "question": "Does this laptop come with a built-in microphone?",
+                "answer": "Yes, this laptop is equipped with a built-in microphone."
             },
             {
                 "question": "What is the maximum battery life for video playback on this laptop?",
                 "answer": "The laptop offers up to 41 hours and 45 minutes of battery life for video playback."
             },
             {
-                "question": "Does this laptop come with a built-in microphone?",
-                "answer": "Yes, this laptop is equipped with a built-in microphone."
+                "question": "Can I use this laptop to record lectures?",
+                "answer": "Yes, the laptop includes Otter.ai, which can record lectures, capture slides, and generate summaries automatically."
             },
             {
                 "question": "Is the memory and ssd upgradable?",
@@ -6322,7 +6322,7 @@
         "upc": "826581191827",
         "seller": null,
         "variation": null,
-        "variant_id": "6679355",
+        "variant_id": "J3PPH548FC",
         "product_category": "Best Buy>Computers & Tablets>Laptops>All Laptops>Windows Laptops",
         "brand": "HP",
         "image_url": "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/3eb1afbf-7981-4466-b504-6fecdbde874e.jpg",
@@ -6515,9 +6515,9 @@
         ],
         "gtin": "0826581191827",
         "mpn": "14-hz0188dx/DK3R7UA#ABA",
-        "timestamp": "2026-10-28T12:28:05.757Z",
+        "timestamp": "2026-10-29T07:30:23.801Z",
         "input": {
-            "url": "https://www.bestbuy.com/product/hp-omnibook-3-14-2k-oled-laptop-snapdragon-x-8-core-cpu-16gb-memory-256gb-ssd-copilot-41-hrs-battery-life1-starlit-blue/J3PPH548FC/sku/6679355"
+            "url": "https://www.bestbuy.com/product/hp-omnibook-3-14-2k-oled-laptop-snapdragon-x-8-core-cpu-16gb-memory-256gb-ssd-copilot-41-hrs-battery-life1-starlit-blue/J3PPH548FC"
         },
         "discovery_input": {
             "keywords": "HP laptop"
@@ -9031,7 +9031,7 @@
         ],
         "release_date": "2026-01-01T00:00:00.000Z",
         "rating": 4.8,
-        "reviews_count": 137,
+        "reviews_count": 139,
         "questions_count": 10,
         "highlights": [
             {
@@ -9724,7 +9724,7 @@
         ],
         "gtin": "0881767160325",
         "mpn": "15-fc0235dx/E0RM7UA#ABA",
-        "timestamp": "2026-10-28T12:28:02.648Z",
+        "timestamp": "2026-10-29T07:28:42.522Z",
         "input": {
             "url": "https://www.bestbuy.com/product/hp-15-6-full-hd-touchscreen-laptop-amd-ryzen-7-2023-16gb-memory-512gb-ssd-natural-silver/J3KSTFF867"
         },
@@ -13706,7 +13706,7 @@
         ],
         "release_date": "2025-01-01T00:00:00.000Z",
         "rating": 4.6,
-        "reviews_count": 313,
+        "reviews_count": 314,
         "questions_count": 10,
         "highlights": [
             {
@@ -14419,7 +14419,7 @@
         ],
         "gtin": "0197105877894",
         "mpn": "GU605CP-G16.U95070",
-        "timestamp": "2026-10-28T12:48:23.984Z",
+        "timestamp": "2026-10-29T07:28:39.688Z",
         "input": {
             "url": "https://www.bestbuy.com/product/asus-rog-zephyrus-g16-16-2-5k-oled-240hz-gaming-laptop-intel-core-ultra-9-285h-16gb-memory-rtx-5070-1tb-storage-eclipse-gray/JJGGLHJXQK"
         },
@@ -16574,7 +16574,7 @@
         ],
         "gtin": "0824142413388",
         "mpn": "STEALTHA16A3076",
-        "timestamp": "2026-10-28T12:48:29.326Z",
+        "timestamp": "2026-10-29T07:28:40.863Z",
         "input": {
             "url": "https://www.bestbuy.com/product/msi-stealth-a16-ai-16-240-hz-gaming-laptop-qhd-amd-ryzen-ai-9-hx-370-with-32gb-memory-geforce-rtx-5080-2tb-ssd-core-black-black/J3P7TXRSP6"
         },
@@ -17029,7 +17029,7 @@
         "upc": "824142466858",
         "seller": null,
         "variation": null,
-        "variant_id": "6679954",
+        "variant_id": "J3P7TXT4VL",
         "product_category": "Best Buy>Computers & Tablets>PC Gaming>Gaming Laptops",
         "brand": "MSI",
         "image_url": "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/d259ed2d-b579-4786-9135-92b6012c9797.jpg",
@@ -17077,9 +17077,9 @@
         ],
         "gtin": "0824142466858",
         "mpn": "Raider 16 HX B2WH-255US",
-        "timestamp": "2026-10-28T12:58:47.047Z",
+        "timestamp": "2026-10-29T07:28:24.584Z",
         "input": {
-            "url": "https://www.bestbuy.com/product/msi-raider-16-hx-16-2-5k-qhd-240hz-gaming-laptop-intel-ultra-9-275hx-2025-geforce-rtx-5070ti-32gb-memory-1tb-storage-core-black/J3P7TXT4VL/sku/6679954"
+            "url": "https://www.bestbuy.com/product/msi-raider-16-hx-16-2-5k-qhd-240hz-gaming-laptop-intel-ultra-9-275hx-2025-geforce-rtx-5070ti-32gb-memory-1tb-storage-core-black/J3P7TXT4VL"
         },
         "discovery_input": {
             "keywords": "MSI laptop"
@@ -18190,7 +18190,7 @@
         "final_price": "$2,869.00",
         "currency": "USD",
         "discount": "30%",
-        "initial_price": "$4,099.00",
+        "initial_price": "$2,869.00",
         "offer_price": "2869",
         "root_category": "Best Buy",
         "breadcrumbs": [
@@ -18492,12 +18492,12 @@
             "https://www.bestbuy.com/site/computers-pcs/pc-gaming/abcat0712000.c?id=abcat0712000",
             "https://www.bestbuy.com/site/pc-gaming/gaming-laptops/pcmcat287600050003.c?id=pcmcat287600050003"
         ],
-        "price": "$4,099.00",
+        "price": "$2,869.00",
         "sale_price": "$2,869.00",
         "reviews": [],
         "gtin": "0824142527481",
         "mpn": "A2XWIG-400US-Upgraded",
-        "timestamp": "2026-10-28T12:47:21.499Z",
+        "timestamp": "2026-10-29T07:28:44.695Z",
         "input": {
             "url": "https://www.bestbuy.com/product/msi-vector-16-240hz-qhd-gaming-laptopintel-ultra-9-275hxgeforce-rtx-508032gb-ram1tb-ssd-1tb-dock-setwin-11-gray/J3P7TX4WV8"
         },
@@ -18677,6 +18677,10 @@
         ],
         "q_a": [
             {
+                "question": "What is the refresh rate of the display on this gaming laptop?",
+                "answer": "The display on this gaming laptop has a refresh rate of 240Hz."
+            },
+            {
                 "question": "Is this gaming laptop equipped with a built-in microphone?",
                 "answer": "Yes, this gaming laptop comes with a built-in microphone."
             },
@@ -18689,16 +18693,12 @@
                 "answer": "Yes, the system memory is expandable up to 128GB using the two available memory slots."
             },
             {
-                "question": "Does this gaming laptop have a backlit keyboard?",
-                "answer": "Yes, this gaming laptop features a 4-zone RGB backlit keyboard for improved visibility."
-            },
-            {
                 "question": "Does this gaming laptop feature a touchscreen display?",
                 "answer": "No, this gaming laptop does not have a touchscreen display."
             },
             {
-                "question": "What is the refresh rate of the display on this gaming laptop?",
-                "answer": "The display on this gaming laptop has a refresh rate of 240Hz."
+                "question": "Does this gaming laptop have a backlit keyboard?",
+                "answer": "Yes, this gaming laptop features a 4-zone RGB backlit keyboard for improved visibility."
             },
             {
                 "question": "Does this laptop feature an all aluminum design?",
@@ -19170,7 +19170,7 @@
         ],
         "gtin": "0824142456040",
         "mpn": "Stealth 16 AI+ B3WF-002US",
-        "timestamp": "2026-10-28T12:48:09.346Z",
+        "timestamp": "2026-10-29T07:29:57.343Z",
         "input": {
             "url": "https://www.bestbuy.com/product/msi-stealth-16-ai-16-2-5k-240hz-oled-gaming-laptop-intel-core-u9-386h-nvidia-geforce-rtx-5060-32gb-memory-1tb-storage-charcoal-black/J3P7TXTXHQ"
         },
@@ -20926,7 +20926,7 @@
         ],
         "gtin": "0824142436004",
         "mpn": "PRE13EVOA2088",
-        "timestamp": "2026-10-28T12:47:17.219Z",
+        "timestamp": "2026-10-29T07:28:48.580Z",
         "input": {
             "url": "https://www.bestbuy.com/product/msi-prestige-13ai-ukiyoe-edition-13-3oled-laptop-intel-core-ultra-7-258v-intel-arc-graphics-with-32gb-memory-1tb-ssd-stellar-gray/J3P7TXQ5QX/sku/6641736"
         },
@@ -21294,7 +21294,7 @@
         ],
         "gtin": "0824142464168",
         "mpn": "TITAN18HXA21258",
-        "timestamp": "2026-10-28T12:59:35.510Z",
+        "timestamp": "2026-10-29T07:28:57.525Z",
         "input": {
             "url": "https://www.bestbuy.com/product/msi-titan-18-hx-ai-18-uhd-gaming-laptop-intel-core-ultra-9-290hx-plus-2026-rtx-5090-64gb-ram-4tb-core-black/J3P7TXTTHW"
         },
@@ -21823,7 +21823,7 @@
         "upc": "824142456002",
         "seller": null,
         "variation": null,
-        "variant_id": "J3P7TXTXQC",
+        "variant_id": "6670611",
         "product_category": "Best Buy>Computers & Tablets>PC Gaming>Gaming Laptops",
         "brand": "MSI",
         "image_url": "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6347761a-7e7e-498e-813c-7f82fa110afd.png",
@@ -21903,9 +21903,9 @@
         ],
         "gtin": "0824142456002",
         "mpn": "Stealth 16 AI+ B3WI-005US",
-        "timestamp": "2026-10-28T12:47:28.095Z",
+        "timestamp": "2026-10-29T07:28:29.128Z",
         "input": {
-            "url": "https://www.bestbuy.com/product/msi-stealth-16-ai-16-2-5k-240hz-oled-gaming-laptop-intel-core-u9-386h-nvidia-geforce-rtx-5080-32gb-memory-2tb-storage-charcoal-black/J3P7TXTXQC"
+            "url": "https://www.bestbuy.com/product/msi-stealth-16-ai-16-2-5k-240hz-oled-gaming-laptop-intel-core-u9-386h-nvidia-geforce-rtx-5080-32gb-memory-2tb-storage-charcoal-black/J3P7TXTXQC/sku/6670611"
         },
         "discovery_input": {
             "keywords": "MSI laptop"
@@ -22621,7 +22621,7 @@
         ],
         "gtin": "0199291649224",
         "mpn": "UX3480QA-ZB/SE_S0A",
-        "timestamp": "2026-10-28T12:48:01.301Z",
+        "timestamp": "2026-10-29T07:29:03.410Z",
         "input": {
             "url": "https://www.bestbuy.com/product/asus-zenbook-14-14-2k-oled-laptop-snapdragon-x1-26-100-2026-8gb-memory-256gb-storage-arctic-blue/JJGHGSQ6WV/sku/6683776"
         },
@@ -23318,7 +23318,7 @@
         ],
         "release_date": "2025-01-01T00:00:00.000Z",
         "rating": 4.5,
-        "reviews_count": 316,
+        "reviews_count": 317,
         "questions_count": 10,
         "highlights": [
             {
@@ -24055,7 +24055,7 @@
         ],
         "gtin": "0197105936706",
         "mpn": "G815LW-G18.U95080",
-        "timestamp": "2026-10-28T12:48:03.676Z",
+        "timestamp": "2026-10-29T07:28:34.351Z",
         "input": {
             "url": "https://www.bestbuy.com/product/asus-rog-strix-g18-18-2-5k-240hz-gaming-laptop-intel-core-ultra-9-hx-32gb-memory-geforce-rtx-5080-2tb-storage-eclipse-gray/JJGGLHXFW8"
         },
@@ -24105,9 +24105,9 @@
             "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/2fcc2304-94c6-4d14-8b07-583f6b4b7fc1.jpg",
             "https://pisces.bbystatic.com/prescaled/500/500/image2/BestBuy_US/images/products/2fcc2304-94c6-4d14-8b07-583f6b4b7fc1.jpg"
         ],
-        "final_price": "$1,899.00",
+        "final_price": "$1,619.99",
         "currency": "USD",
-        "initial_price": "$1,899.00",
+        "initial_price": "$1,799.99",
         "offer_price": "1899",
         "root_category": "Best Buy",
         "breadcrumbs": [
@@ -24785,7 +24785,7 @@
         ],
         "gtin": "0824142411445",
         "mpn": "VECTOR16HXA2275",
-        "timestamp": "2026-10-28T12:47:21.547Z",
+        "timestamp": "2026-10-29T07:25:22.810Z",
         "input": {
             "url": "https://www.bestbuy.com/product/msi-vector-16-hx-ai-16-144hz-fhd-wuxga-gaming-laptop-intel-ultra-7-255hx-geforce-rtx-5070ti-16gb-memory-1tb-ssd-cosmo-gray/J3P7TXRLGZ"
         },
@@ -26401,7 +26401,7 @@
         "upc": "824142421901",
         "seller": null,
         "variation": null,
-        "variant_id": "12353274",
+        "variant_id": "J3P7TXQ7JJ",
         "product_category": "Best Buy>Computers & Tablets>Laptops>All Laptops",
         "brand": "MSI",
         "image_url": "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/86e29db0-d09a-4399-b540-0b68690ab11c.jpg",
@@ -26432,9 +26432,9 @@
         "reviews": [],
         "gtin": "0824142421901",
         "mpn": "MOD15131097",
-        "timestamp": "2026-10-28T12:47:18.687Z",
+        "timestamp": "2026-10-29T07:28:31.579Z",
         "input": {
-            "url": "https://www.bestbuy.com/product/msi-modern-15-b13m-15-6-full-hd-laptop-intel-core-i5-i5-1334u-16gb-memory-512gb-ssd-classic-black/J3P7TXQ7JJ/sku/12353274"
+            "url": "https://www.bestbuy.com/product/msi-modern-15-b13m-15-6-full-hd-laptop-intel-core-i5-i5-1334u-16gb-memory-512gb-ssd-classic-black/J3P7TXQ7JJ"
         },
         "discovery_input": {
             "keywords": "MSI laptop"
@@ -27314,8 +27314,8 @@
             }
         ],
         "release_date": "2026-01-01T00:00:00.000Z",
-        "rating": 4.1,
-        "reviews_count": 9,
+        "rating": 4.2,
+        "reviews_count": 10,
         "questions_count": 5,
         "highlights": [
             {
@@ -27842,7 +27842,7 @@
         ],
         "gtin": "0884116650577",
         "mpn": "LDX13267-SX12577SHI-PUS",
-        "timestamp": "2026-10-28T16:53:05.648Z",
+        "timestamp": "2026-10-29T07:28:32.474Z",
         "input": {
             "url": "https://www.bestbuy.com/product/dell-xps-googlebook-13-4-2-5k-touchscreen-laptop-snapdragon-x-elite-x1e-80-100-2024-16gb-memory-512gb-storage-shimmer/J3K4L6QQFC/sku/6690181"
         },
@@ -33340,7 +33340,7 @@
         "upc": "199291382374",
         "seller": null,
         "variation": null,
-        "variant_id": "JJGHGPFSKV",
+        "variant_id": "6671012",
         "product_category": "Best Buy>Computers & Tablets>Laptops>All Laptops>Windows Laptops",
         "brand": "ASUS",
         "image_url": "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/fd8c2c9a-b6e2-476c-bd86-6f8c78828542.jpg",
@@ -33533,9 +33533,9 @@
         ],
         "gtin": "0199291382374",
         "mpn": "UM5606GA-ZB/S16_90",
-        "timestamp": "2026-10-28T12:49:46.190Z",
+        "timestamp": "2026-10-29T07:28:46.269Z",
         "input": {
-            "url": "https://www.bestbuy.com/product/asus-zenbook-s16-16-3k-oled-touchscreen-laptop-amd-ryzen-ai-9-465-2026-32gb-memory-1tb-storage-copilot-pc-antrim-gray/JJGHGPFSKV"
+            "url": "https://www.bestbuy.com/product/asus-zenbook-s16-16-3k-oled-touchscreen-laptop-amd-ryzen-ai-9-465-2026-32gb-memory-1tb-storage-copilot-pc-antrim-gray/JJGHGPFSKV/sku/6671012"
         },
         "discovery_input": {
             "keywords": "ASUS laptop"
@@ -35834,7 +35834,7 @@
         ],
         "gtin": "0884116652786",
         "mpn": "LDS16260-9786BLU-PUS",
-        "timestamp": "2026-10-28T16:55:06.952Z",
+        "timestamp": "2026-10-29T07:28:44.248Z",
         "input": {
             "url": "https://www.bestbuy.com/product/dell-16s-16-3k-oled-touchscreen-laptop-intel-core-ultra-9-386h-2026-32gb-memory-512gb-storage-copilot-pc-celestial-blue/J3K4L6QKSS"
         },
@@ -36467,32 +36467,32 @@
         ],
         "q_a": [
             {
-                "question": "What is included with this laptop?",
-                "answer": "This laptop includes a 3-month PC Game Pass."
-            },
-            {
-                "question": "Does this laptop include Dolby Atmos?",
-                "answer": "Yes, this laptop has Dolby Atmos support."
-            },
-            {
-                "question": "Does this laptop have a dedicated graphics card?",
-                "answer": "Yes, it has a dedicated NVIDIA GeForce RTX 5080 laptop GPU."
-            },
-            {
-                "question": "What is the storage capacity of this laptop?",
-                "answer": "This laptop has a 2TB SSD."
-            },
-            {
-                "question": "What processor does this laptop use?",
-                "answer": "This laptop has an AMD Ryzen AI 9 HX 370 Processor."
-            },
-            {
                 "question": "What type of display does the Zephyrus G14 have?",
                 "answer": "The Zephyrus G14 features an OLED ROG Nebula Display."
             },
             {
                 "question": "How much RAM does this ASUS laptop have?",
                 "answer": "This ASUS laptop comes equipped with 32GB of LPDDR5X RAM."
+            },
+            {
+                "question": "What processor does this laptop use?",
+                "answer": "This laptop has an AMD Ryzen AI 9 HX 370 Processor."
+            },
+            {
+                "question": "Does this laptop have a dedicated graphics card?",
+                "answer": "Yes, it has a dedicated NVIDIA GeForce RTX 5080 laptop GPU."
+            },
+            {
+                "question": "Does this laptop include Dolby Atmos?",
+                "answer": "Yes, this laptop has Dolby Atmos support."
+            },
+            {
+                "question": "What is the storage capacity of this laptop?",
+                "answer": "This laptop has a 2TB SSD."
+            },
+            {
+                "question": "What is included with this laptop?",
+                "answer": "This laptop includes a 3-month PC Game Pass."
             },
             {
                 "question": "When is the release date of the rog zephyrus G14 2025?",
@@ -37049,7 +37049,7 @@
         ],
         "gtin": "0197105936720",
         "mpn": "GA403WW-G14.R95080",
-        "timestamp": "2026-10-28T19:58:09.905Z",
+        "timestamp": "2026-10-29T07:29:03.786Z",
         "input": {
             "url": "https://www.bestbuy.com/product/asus-rog-zephyrus-g14-14-3k-oled-120hz-gaming-laptop-copilot-pc-amd-ryzen-ai-9-hx-32gb-memory-rtx-5080-2tb-storage-platinum-white/JJGGLHXFWZ"
         },
@@ -38144,16 +38144,16 @@
                 "answer": "This laptop has 16 GB of DDR4 system memory."
             },
             {
-                "question": "What operating system does this ASUS laptop come with?",
-                "answer": "This ASUS Vivobook laptop comes with the Windows 11 Home operating system."
-            },
-            {
                 "question": "What is the screen size of this laptop?",
                 "answer": "This ASUS Vivobook laptop has a 16-inch display screen."
             },
             {
                 "question": "Does this laptop have a backlit keyboard?",
                 "answer": "Yes, this laptop does have a backlit keyboard for typing in low light conditions."
+            },
+            {
+                "question": "What operating system does this ASUS laptop come with?",
+                "answer": "This ASUS Vivobook laptop comes with the Windows 11 Home operating system."
             },
             {
                 "question": "According to BBuy website detailed specs. No Wifi, No Ethernet, 1 HDMI and 4 USB-A. How do you connect to the internet?",
@@ -38536,7 +38536,7 @@
         "upc": "197105081215",
         "seller": null,
         "variation": null,
-        "variant_id": "JJGGLR7XFQ",
+        "variant_id": "6542092",
         "product_category": "Best Buy>Computers & Tablets>Laptops>All Laptops",
         "brand": "ASUS",
         "image_url": "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/d012edc3-c044-4940-8463-9552f5e439f8.jpg",
@@ -38728,9 +38728,9 @@
         ],
         "gtin": "0197105081215",
         "mpn": "M1605YA-ES74",
-        "timestamp": "2026-10-28T19:58:14.959Z",
+        "timestamp": "2026-10-29T07:29:06.910Z",
         "input": {
-            "url": "https://www.bestbuy.com/product/asus-vivobook-16-16-fhd-laptop-amd-ryzen-7-7730u-with-16gb-memory-1tb-ssd-indie-black/JJGGLR7XFQ"
+            "url": "https://www.bestbuy.com/product/asus-vivobook-16-16-fhd-laptop-amd-ryzen-7-7730u-with-16gb-memory-1tb-ssd-indie-black/JJGGLR7XFQ/sku/6542092"
         },
         "discovery_input": {
             "keywords": "ASUS laptop"
@@ -43576,7 +43576,7 @@
         "reviews": [],
         "gtin": "0719192539297",
         "mpn": "15 HX B14WGK-293US-Upgraded",
-        "timestamp": "2026-10-28T19:57:04.302Z",
+        "timestamp": "2026-10-29T07:28:40.049Z",
         "input": {
             "url": "https://www.bestbuy.com/product/msi-katana-15-6-gaming-laptop-intel-i7-14650hxgeforce-rtx-5070-8gb-gddr732gb-ddr52tb-ssd-1tb-dock-setwin-11-black/JXTZZG5945/sku/12137004"
         },
@@ -55497,7 +55497,7 @@
         ],
         "release_date": "2026-01-01T00:00:00.000Z",
         "rating": 4.8,
-        "reviews_count": 194,
+        "reviews_count": 195,
         "questions_count": 10,
         "highlights": [
             {
@@ -56192,7 +56192,7 @@
         ],
         "gtin": "0199275077975",
         "mpn": "83JT0047US",
-        "timestamp": "2026-10-28T12:46:04.389Z",
+        "timestamp": "2026-10-29T07:28:56.943Z",
         "input": {
             "url": "https://www.bestbuy.com/product/lenovo-yoga-7i-2-in-1-16-2k-touchscreen-laptop-core-ultra-7-processor-256v-2024-16gb-memory-512gb-storage-copilot-pc-luna-grey/JJGH3KXVK7"
         },
@@ -56679,7 +56679,7 @@
         "upc": "884116650386",
         "seller": null,
         "variation": null,
-        "variant_id": "6688527",
+        "variant_id": "J3K4L6QQQS",
         "product_category": "Best Buy>Computers & Tablets>Laptops>All Laptops",
         "brand": "Dell",
         "image_url": "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/80b33e0b-e4ee-4b4a-98de-ae843f9ae612.jpg",
@@ -56710,9 +56710,9 @@
         "reviews": [],
         "gtin": "0884116650386",
         "mpn": "LDX13260-7386STR-PUS",
-        "timestamp": "2026-10-28T12:58:56.181Z",
+        "timestamp": "2026-10-29T07:28:41.055Z",
         "input": {
-            "url": "https://www.bestbuy.com/product/dell-xps-13-4-2-5k-touchscreen-laptop-intel-core-ultra-7-series-3-2026-16gb-memory-512gb-storage-storm/J3K4L6QQQS/sku/6688527"
+            "url": "https://www.bestbuy.com/product/dell-xps-13-4-2-5k-touchscreen-laptop-intel-core-ultra-7-series-3-2026-16gb-memory-512gb-storage-storm/J3K4L6QQQS"
         },
         "discovery_input": {
             "keywords": "Dell laptop"
@@ -61457,7 +61457,7 @@
         ],
         "gtin": "0199275078002",
         "mpn": "83TE001PUS",
-        "timestamp": "2026-10-28T12:46:05.039Z",
+        "timestamp": "2026-10-29T07:28:34.988Z",
         "input": {
             "url": "https://www.bestbuy.com/product/lenovo-yoga-7i-2-in-1-16-2k-oled-touchscreen-laptop-intel-core-ultra-7-355-2026-24gb-memory-512gb-storage-luna-grey/JJGH3KXVZC"
         },
@@ -63475,7 +63475,7 @@
         ],
         "release_date": "2026-01-01T00:00:00.000Z",
         "rating": 4.7,
-        "reviews_count": 185,
+        "reviews_count": 186,
         "questions_count": 10,
         "highlights": [
             {
@@ -64183,7 +64183,7 @@
         ],
         "gtin": "0199272785583",
         "mpn": "83TD0000US",
-        "timestamp": "2026-10-28T12:46:07.267Z",
+        "timestamp": "2026-10-29T07:28:46.596Z",
         "input": {
             "url": "https://www.bestbuy.com/product/lenovo-yoga-7a-2-in-1-14-2k-oled-touchscreen-laptop-amd-ryzen-ai-5-430-2026-16gb-memory-512gb-storage-copilot-pc-seashell/JJGH36L8FL"
         },
@@ -65932,7 +65932,7 @@
         ],
         "gtin": "0199272785644",
         "mpn": "83TF0000US",
-        "timestamp": "2026-10-28T12:46:05.462Z",
+        "timestamp": "2026-10-29T07:28:55.233Z",
         "input": {
             "url": "https://www.bestbuy.com/product/lenovo-yoga-7a-2-in-1-16-2k-lcd-touchscreen-laptop-amd-ryzen-ai-5-430-2026-16gb-memory-512gb-storage-copilot-pc-seashell/JJGH36LG7K"
         },
@@ -67515,7 +67515,7 @@
         ],
         "gtin": "0828132443232",
         "mpn": "83W6000EUS",
-        "timestamp": "2026-10-28T12:45:57.105Z",
+        "timestamp": "2026-10-29T07:28:25.278Z",
         "input": {
             "url": "https://www.bestbuy.com/product/lenovo-googlebook-15-3-3k-120hz-oled-touchscreen-laptop-intel-core-ultra-5-processor-325-2026-16gb-memory-512gb-storage-cloud-grey/J3PT7KJYXG/sku/6687176"
         },
@@ -72224,7 +72224,7 @@
         ],
         "gtin": "0826581390626",
         "mpn": "14-hz0088dx/DQ2E7UA#ABA",
-        "timestamp": "2026-10-28T12:58:24.947Z",
+        "timestamp": "2026-10-29T07:28:50.553Z",
         "input": {
             "url": "https://www.bestbuy.com/product/hp-omnibook-3-14-2k-oled-laptop-snapdragon-x-8-core-cpu-8gb-memory-256gb-ssd-41-hrs-battery-life1-starlit-blue/J3PPHFY77J/sku/6679316"
         },
@@ -72754,7 +72754,7 @@
         "reviews": [],
         "gtin": "0828132531175",
         "mpn": "83TE0047US",
-        "timestamp": "2026-10-28T12:46:13.122Z",
+        "timestamp": "2026-10-29T07:29:15.180Z",
         "input": {
             "url": "https://www.bestbuy.com/product/lenovo-yoga-7i-2-in-1-16-2k-oled-touchscreen-laptop-intel-core-ultra-5-processor-322-2026-8gb-memory-512gb-storage-luna-grey/J3PT7K8V57/sku/6688420"
         },
@@ -73352,7 +73352,7 @@
         ],
         "gtin": "0884116652861",
         "mpn": "LDS14265-A861BLU-PUS",
-        "timestamp": "2026-10-28T12:58:40.503Z",
+        "timestamp": "2026-10-29T07:28:55.606Z",
         "input": {
             "url": "https://www.bestbuy.com/product/dell-14s-14-2k-touchscreen-laptop-amd-ryzen-ai-5-430-2026-16gb-memory-512gb-storage-copilot-pc-celestial-blue/J3K4L6QKRS"
         },
@@ -73877,7 +73877,7 @@
         "reviews": [],
         "gtin": "0884116650591",
         "mpn": "LDB06250-7591BLU-PUS",
-        "timestamp": "2026-10-28T12:58:50.086Z",
+        "timestamp": "2026-10-29T07:28:58.260Z",
         "input": {
             "url": "https://www.bestbuy.com/product/dell-plus-16-2k-2-in-1-touchscreen-laptop-intel-core-ultra-7-series-2-2024-16gb-memory-512gb-storage-copilot-pc-ice-blue/J3K4L6QQFH"
         },
@@ -74056,12 +74056,20 @@
         ],
         "q_a": [
             {
+                "question": "How many Thunderbolt ports does this laptop have?",
+                "answer": "This laptop has two Thunderbolt 4 ports."
+            },
+            {
+                "question": "What is the CPU boost clock frequency?",
+                "answer": "The CPU boost clock frequency is 4.7 gigahertz."
+            },
+            {
                 "question": "Does this laptop have a backlit keyboard?",
                 "answer": "Yes, this laptop features a backlit keyboard."
             },
             {
-                "question": "Does this laptop have a front-facing camera?",
-                "answer": "Yes, this laptop has a front-facing camera."
+                "question": "What kind of memory does this laptop use?",
+                "answer": "This laptop has 16GB of memory."
             },
             {
                 "question": "What is the refresh rate of the screen?",
@@ -74072,16 +74080,8 @@
                 "answer": "This laptop has 512 GB of solid state drive storage."
             },
             {
-                "question": "What kind of memory does this laptop use?",
-                "answer": "This laptop has 16GB of memory."
-            },
-            {
-                "question": "How many Thunderbolt ports does this laptop have?",
-                "answer": "This laptop has two Thunderbolt 4 ports."
-            },
-            {
-                "question": "What is the CPU boost clock frequency?",
-                "answer": "The CPU boost clock frequency is 4.7 gigahertz."
+                "question": "Does this laptop have a front-facing camera?",
+                "answer": "Yes, this laptop has a front-facing camera."
             },
             {
                 "question": "Does this have a touch screen?",
@@ -74404,7 +74404,7 @@
         "reviews": [],
         "gtin": "0884116482635",
         "mpn": "2YM1D",
-        "timestamp": "2026-10-28T16:53:01.492Z",
+        "timestamp": "2026-10-29T07:30:07.704Z",
         "input": {
             "url": "https://www.bestbuy.com/product/dell-pro-14-plus-pb14250-14-copilot-pc-laptop-intel-core-ultra-5-236v-vpro-technology-16gb-512gb-ssd-silver/J3K4L6X53P/sku/6623897"
         },
@@ -74996,7 +74996,7 @@
         ],
         "gtin": "0884116649632",
         "mpn": "LDB04250-7632BLU-PUS",
-        "timestamp": "2026-10-28T12:59:23.886Z",
+        "timestamp": "2026-10-29T07:28:32.474Z",
         "input": {
             "url": "https://www.bestbuy.com/product/dell-plus-14-2k-2-in-1-laptop-intel-core-ultra-7-series-2-256v-2026-16gb-memory-512gb-storage-copilot-pc-ice-blue/J3K4L6QRPG"
         },
@@ -75486,7 +75486,7 @@
         "upc": "884116650508",
         "seller": null,
         "variation": null,
-        "variant_id": "6690170",
+        "variant_id": "J3K4L6QQZL",
         "product_category": "Best Buy>Computers & Tablets>Laptops>All Laptops",
         "brand": "Dell",
         "image_url": "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/5999d12b-6f42-4df8-a8d7-16505bfd7a21.jpg",
@@ -75517,9 +75517,9 @@
         "reviews": [],
         "gtin": "0884116650508",
         "mpn": "LD15261-5508BLU-PUS",
-        "timestamp": "2026-10-28T12:47:34.341Z",
+        "timestamp": "2026-10-29T07:28:56.392Z",
         "input": {
-            "url": "https://www.bestbuy.com/product/dell-15-3-2k-touchscreen-laptop-intel-core-5-series-3-2026-8gb-memory-512gb-storage-celestial-blue/J3K4L6QQZL/sku/6690170"
+            "url": "https://www.bestbuy.com/product/dell-15-3-2k-touchscreen-laptop-intel-core-5-series-3-2026-8gb-memory-512gb-storage-celestial-blue/J3K4L6QQZL"
         },
         "discovery_input": {
             "keywords": "Dell laptop"
@@ -76421,24 +76421,24 @@
         ],
         "q_a": [
             {
-                "question": "What type of display does this laptop have?",
-                "answer": "This laptop features a 13.14-inch LCD FHD+ display."
+                "question": "What is the storage capacity of this laptop?",
+                "answer": "This laptop has a total storage capacity of 512GB SSD."
             },
             {
                 "question": "How long does the battery last on this Dell laptop?",
                 "answer": "This Dell laptop provides a battery life of up to 13 hours."
             },
             {
-                "question": "What is the storage capacity of this laptop?",
-                "answer": "This laptop has a total storage capacity of 512GB SSD."
-            },
-            {
-                "question": "Does this laptop come with Windows Copilot?",
-                "answer": "Yes, this laptop comes with Windows Copilot, your personal AI assistant."
+                "question": "What type of display does this laptop have?",
+                "answer": "This laptop features a 13.14-inch LCD FHD+ display."
             },
             {
                 "question": "What kind of audio features does this laptop have?",
                 "answer": "The laptop is equipped with Dolby Atmos and Waves MaxxAudio for 360-degree spatial sound, and an 8W quad-speaker design tuned by Jack Joseph Puig."
+            },
+            {
+                "question": "Does this laptop come with Windows Copilot?",
+                "answer": "Yes, this laptop comes with Windows Copilot, your personal AI assistant."
             },
             {
                 "question": "The camera does not work on my son's Dell XPS 13-13.4 laptop and it is only a few months old. What is the warranty period and does this happen often as I don't think the camera ever worked?"
@@ -76991,7 +76991,7 @@
         ],
         "gtin": "0884116429715",
         "mpn": "XPS9350-7715BLK-PUS",
-        "timestamp": "2026-10-28T16:53:16.581Z",
+        "timestamp": "2026-10-29T07:28:49.744Z",
         "input": {
             "url": "https://www.bestbuy.com/product/dell-xps-13-13-4-2k-laptop-intel-core-ultra-7-series-2-256v-2024-16gb-memory-512-gb-storage-copilot-pc-graphite/J3K4L6J96Q/sku/6598704"
         },
@@ -77923,32 +77923,32 @@
         ],
         "q_a": [
             {
-                "question": "Can I use a stylus with this laptop?",
-                "answer": "Yes, this laptop supports active stylus input."
-            },
-            {
                 "question": "Does this laptop have a camera?",
                 "answer": "Yes, this laptop has a front-facing camera."
             },
             {
-                "question": "What is the maximum wattage of the power supply?",
-                "answer": "The power supply maximum wattage is 65 watts."
-            },
-            {
-                "question": "What kind of audio technology does the laptop use?",
-                "answer": "The laptop uses stereo speakers with Realtek SounzReal and supports Dolby Atmos decoder."
+                "question": "Can I use a stylus with this laptop?",
+                "answer": "Yes, this laptop supports active stylus input."
             },
             {
                 "question": "How many CPU threads does this laptop have?",
                 "answer": "This laptop has sixteen CPU threads."
             },
             {
+                "question": "Does this laptop have a backlit keyboard?",
+                "answer": "Yes, this laptop features a backlit keyboard."
+            },
+            {
+                "question": "What is the maximum wattage of the power supply?",
+                "answer": "The power supply maximum wattage is 65 watts."
+            },
+            {
                 "question": "Is the Neural Processing Unit available in this laptop?",
                 "answer": "Yes, the Neural Processing Unit is available in this laptop."
             },
             {
-                "question": "Does this laptop have a backlit keyboard?",
-                "answer": "Yes, this laptop features a backlit keyboard."
+                "question": "What kind of audio technology does the laptop use?",
+                "answer": "The laptop uses stereo speakers with Realtek SounzReal and supports Dolby Atmos decoder."
             },
             {
                 "question": "Is windows 11 installed?",
@@ -78402,7 +78402,7 @@
         "upc": "884116651369",
         "seller": null,
         "variation": null,
-        "variant_id": "J3K4L6QTXK",
+        "variant_id": "6625647",
         "product_category": "Best Buy>Computers & Tablets>Laptops>All Laptops>Windows Laptops",
         "brand": "Dell",
         "image_url": "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/ee7067c2-7c31-4046-8855-d364a62a0350.jpg",
@@ -78595,9 +78595,9 @@
         ],
         "gtin": "0884116651369",
         "mpn": "LDB04255-A369BLU-PUS",
-        "timestamp": "2026-10-28T12:58:49.987Z",
+        "timestamp": "2026-10-29T07:28:56.428Z",
         "input": {
-            "url": "https://www.bestbuy.com/product/dell-plus-14-2k-2-in-1-touchscreen-laptop-amd-ryzen-ai-300-series-ai-7-350-2025-16gb-memory-1tb-storage-copilot-pc-midnight-blue/J3K4L6QTXK"
+            "url": "https://www.bestbuy.com/product/dell-plus-14-2k-2-in-1-touchscreen-laptop-amd-ryzen-ai-300-series-ai-7-350-2025-16gb-memory-1tb-storage-copilot-pc-midnight-blue/J3K4L6QTXK/sku/6625647"
         },
         "discovery_input": {
             "keywords": "Dell laptop"
@@ -79110,7 +79110,7 @@
         "reviews": [],
         "gtin": "0884116650492",
         "mpn": "LD15261-7492BLU-PUS",
-        "timestamp": "2026-10-28T12:58:54.930Z",
+        "timestamp": "2026-10-29T07:28:57.750Z",
         "input": {
             "url": "https://www.bestbuy.com/product/dell-15-3-2k-touchscreen-laptop-intel-core-7-series-3-2026-16gb-memory-1tb-storage-celestial-blue/J3K4L6QQKT"
         },
@@ -79909,7 +79909,7 @@
         ],
         "gtin": "0884116649656",
         "mpn": "LDC15255-7656BLK-PUS",
-        "timestamp": "2026-10-28T12:58:49.932Z",
+        "timestamp": "2026-10-29T07:29:01.521Z",
         "input": {
             "url": "https://www.bestbuy.com/product/dell-15-6-2k-touchscreen-laptop-amd-ryzen-7-7000-series-7730u-2023-16gb-memory-512gb-storage-carbon-black/J3K4L6QRS8"
         },
@@ -80732,7 +80732,7 @@
         ],
         "gtin": "0884116651376",
         "mpn": "LDB04255-A376BLU-PUS",
-        "timestamp": "2026-10-28T16:53:37.262Z",
+        "timestamp": "2026-10-29T07:28:43.453Z",
         "input": {
             "url": "https://www.bestbuy.com/product/dell-plus-14-2k-2-in-1-touchscreen-laptop-amd-ryzen-ai-300-series-ai-5-340-2025-16gb-memory-512gb-storage-copilot-pc-midnight-blue/J3K4L6QT3J/sku/6625646"
         },
@@ -80802,7 +80802,7 @@
         ],
         "release_date": "2025-01-01T00:00:00.000Z",
         "rating": 4.7,
-        "reviews_count": 396,
+        "reviews_count": 397,
         "questions_count": 10,
         "highlights": [
             {
@@ -81527,7 +81527,7 @@
         ],
         "gtin": "0884116652427",
         "mpn": "LDC15250-7427BLK-PUS",
-        "timestamp": "2026-10-28T12:58:50.344Z",
+        "timestamp": "2026-10-29T07:29:01.699Z",
         "input": {
             "url": "https://www.bestbuy.com/product/dell-15-6-2k-touchscreen-laptop-intel-13th-generation-core-i7-1355u-2023-16gb-memory-512-gb-storage-carbon-black/J3K4L6QW5C"
         },
@@ -82620,7 +82620,7 @@
         ],
         "gtin": "0884116000068",
         "mpn": "DC15250-Upgraded",
-        "timestamp": "2026-10-28T12:58:57.977Z",
+        "timestamp": "2026-10-29T07:28:40.911Z",
         "input": {
             "url": "https://www.bestbuy.com/product/dell-15-15-6-fhd-display-laptopintel-core-i7-1355u16gb-ram512gb-ssd-160gb-docking-stationwin-11-pro-silver/J3K4LSV7CW"
         },
@@ -83137,7 +83137,7 @@
         "reviews": [],
         "gtin": "0884116652762",
         "mpn": "LDS16260-5762BLU-PUS",
-        "timestamp": "2026-10-28T16:54:51.374Z",
+        "timestamp": "2026-10-29T07:28:53.731Z",
         "input": {
             "url": "https://www.bestbuy.com/product/dell-16s-16-2k-touchscreen-laptop-intel-core-ultra-5-322-2026-16gb-memory-512gb-storage-copilot-pc-celestial-blue/J3K4L6QKP9"
         },
@@ -83312,8 +83312,12 @@
         ],
         "q_a": [
             {
-                "question": "Is this laptop virtual reality ready?",
-                "answer": "Yes, this laptop is VR ready and compatible with Oculus Rift, HTC Vive, and Windows Mixed Reality Ultra."
+                "question": "Does this laptop have a backlit keyboard?",
+                "answer": "Yes, it has a backlit keyboard for easy typing in dim or dark conditions."
+            },
+            {
+                "question": "How much system memory does the laptop have?",
+                "answer": "The laptop has 64 GB of DDR5 system memory."
             },
             {
                 "question": "What is the size of the solid state drive?",
@@ -83324,12 +83328,8 @@
                 "answer": "This laptop features the NVIDIA GeForce RTX 5080 Laptop graphics card with 16 GB GDDR7 dedicated video memory."
             },
             {
-                "question": "How much system memory does the laptop have?",
-                "answer": "The laptop has 64 GB of DDR5 system memory."
-            },
-            {
-                "question": "Does this laptop have a backlit keyboard?",
-                "answer": "Yes, it has a backlit keyboard for easy typing in dim or dark conditions."
+                "question": "Is this laptop virtual reality ready?",
+                "answer": "Yes, this laptop is VR ready and compatible with Oculus Rift, HTC Vive, and Windows Mixed Reality Ultra."
             },
             {
                 "question": "What is the GPU TGP wattage on this MSI Stealth A18?",
@@ -83675,7 +83675,7 @@
         "reviews": [],
         "gtin": "0824142407745",
         "mpn": "STEALTHA18AI3009",
-        "timestamp": "2026-10-28T19:57:03.613Z",
+        "timestamp": "2026-10-29T07:29:15.781Z",
         "input": {
             "url": "https://www.bestbuy.com/product/msi-18-gaming-laptop-3840-x-2400-amd-ryzen-ai-9-hx-370-with-64gb-memory-geforce-rtx-5080-2-tb-ssd-midnight-black-black/J3P7TXRCYZ"
         },
@@ -84269,7 +84269,7 @@
         ],
         "gtin": "0824142437667",
         "mpn": "CYBORGA15B2030",
-        "timestamp": "2026-10-28T12:57:46.027Z",
+        "timestamp": "2026-10-29T07:28:33.265Z",
         "input": {
             "url": "https://www.bestbuy.com/product/msi-cyborg-a15-ai-15-144hz-fhd-gaming-laptop-amd-r7-260-nvidia-geforce-rtx-5060-16gb-memory-1tb-ssd-translucent-black/J3P7TXH78T"
         },
@@ -84645,7 +84645,7 @@
         "reviews": [],
         "gtin": "0824142283066",
         "mpn": "B2RWFKG-071US-Upgraded",
-        "timestamp": "2026-10-28T12:47:23.515Z",
+        "timestamp": "2026-10-29T07:28:56.358Z",
         "input": {
             "url": "https://www.bestbuy.com/product/msi-cyborg-15-15-6-gaming-laptopintel-core-7-240h32gb-ram1tb-ssd-1tb-dock-setgeforce-rtx-5060win-11-black/J3P7TX8C5H"
         },
@@ -85020,7 +85020,7 @@
         ],
         "gtin": "0824142448182",
         "mpn": "RAIDERA18HX272",
-        "timestamp": "2026-10-28T12:57:57.682Z",
+        "timestamp": "2026-10-29T07:30:05.123Z",
         "input": {
             "url": "https://www.bestbuy.com/product/msi-raider-a18-hx-18-qhd-gaming-laptop-amd-ryzen-9-9955hx3d-2025-rtx-5080-32gb-ram-2tb-storage-core-black/J3P7TXHTCG"
         },
@@ -85532,7 +85532,7 @@
         "reviews": [],
         "gtin": "0824142412121",
         "mpn": "CYBORGA15B2006",
-        "timestamp": "2026-10-28T12:58:48.055Z",
+        "timestamp": "2026-10-29T07:28:47.507Z",
         "input": {
             "url": "https://www.bestbuy.com/product/msi-cyborg-a15-ai-15-144hz-fhd-gaming-laptop-amd-r9-270-nvidia-geforce-rtx-5060-16gb-memory-1tb-ssd-translucent-black/J3P7TXRYY4"
         },
@@ -85570,11 +85570,11 @@
             "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/3413c2b9-bcbd-4c84-a8cc-43d4e1e9a226.jpg",
             "https://pisces.bbystatic.com/prescaled/500/500/image2/BestBuy_US/images/products/3413c2b9-bcbd-4c84-a8cc-43d4e1e9a226.jpg"
         ],
-        "final_price": "$2,249.00",
+        "final_price": "$2,299.00",
         "currency": "USD",
-        "discount": "30%",
-        "initial_price": "$3,219.00",
-        "offer_price": "2249",
+        "discount": "20%",
+        "initial_price": "$2,869.00",
+        "offer_price": "2299",
         "root_category": "Best Buy",
         "breadcrumbs": [
             {
@@ -85923,12 +85923,12 @@
             "https://www.bestbuy.com/site/computers-pcs/laptop-computers/abcat0502000.c?id=abcat0502000",
             "https://www.bestbuy.com/site/laptop-computers/all-laptops/pcmcat138500050001.c?id=pcmcat138500050001"
         ],
-        "price": "$3,219.00",
-        "sale_price": "$2,249.00",
+        "price": "$2,869.00",
+        "sale_price": "$2,299.00",
         "reviews": [],
         "gtin": "0824142944585",
         "mpn": "A2HMTG-032US-Upgraded",
-        "timestamp": "2026-10-28T19:57:07.049Z",
+        "timestamp": "2026-10-29T07:28:36.702Z",
         "input": {
             "url": "https://www.bestbuy.com/product/msi-venture-16-oled-touch-ai-laptopintel-ultra-9-285h64gb-ddr52tb-ssd-1tb-dockintel-arc-140tbacklitwin-11-pro-solid-gray/J3P7T3FSLP/sku/13088940"
         },
@@ -86494,7 +86494,7 @@
         ],
         "gtin": "0824142408285",
         "mpn": "VECTORA18HX076",
-        "timestamp": "2026-10-28T12:57:50.088Z",
+        "timestamp": "2026-10-29T07:28:58.534Z",
         "input": {
             "url": "https://www.bestbuy.com/product/msi-18-gaming-laptop-2560-x-1600-qhd--amd-ryzen-9-9955hx-with-64gb-memory-geforce-rtx-5080-2-tb-ssd-cosmo-gray-gray/J3P7TXR28P"
         },
@@ -86823,7 +86823,7 @@
         "reviews": [],
         "gtin": "0824142457856",
         "mpn": "CYBORGA17B2046",
-        "timestamp": "2026-10-28T12:47:37.051Z",
+        "timestamp": "2026-10-29T07:28:31.196Z",
         "input": {
             "url": "https://www.bestbuy.com/product/msi-cyborg-a17-ai-17-3-fhd-gaming-laptop-amd-ryzen-9-270-2025-rtx-5060-16gb-ram-1tb-storage-translucent-black/J3P7TXTGR8"
         },
@@ -86863,10 +86863,10 @@
             "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/44fb6021-b039-4941-9086-702c58b53708.jpg",
             "https://pisces.bbystatic.com/prescaled/500/500/image2/BestBuy_US/images/products/44fb6021-b039-4941-9086-702c58b53708.jpg"
         ],
-        "final_price": "$1,729.00",
+        "final_price": "$1,779.00",
         "currency": "USD",
-        "initial_price": "$1,729.00",
-        "offer_price": "1729",
+        "initial_price": "$1,779.00",
+        "offer_price": "1779",
         "root_category": "Best Buy",
         "breadcrumbs": [
             {
@@ -87199,12 +87199,12 @@
             "https://www.bestbuy.com/site/computers-pcs/pc-gaming/abcat0712000.c?id=abcat0712000",
             "https://www.bestbuy.com/site/pc-gaming/gaming-laptops/pcmcat287600050003.c?id=pcmcat287600050003"
         ],
-        "price": "$1,729.00",
-        "sale_price": "$1,729.00",
+        "price": "$1,779.00",
+        "sale_price": "$1,779.00",
         "reviews": [],
         "gtin": "0824142428849",
         "mpn": "B2HWFKG-006US-Upgraded",
-        "timestamp": "2026-10-28T12:47:31.238Z",
+        "timestamp": "2026-10-29T07:29:10.560Z",
         "input": {
             "url": "https://www.bestbuy.com/product/msi-cyborg-a15-15-6-fhd-144hz-gaming-laptopamd-ryzen-9-27032gb-ram1tb-ssd-1tb-dock-setgeforce-rtx-5060win-11-black/J3P7TXQS2V/sku/11959242"
         },
@@ -87242,8 +87242,8 @@
         ],
         "final_price": "$879.99",
         "currency": "USD",
-        "discount": "39%",
-        "initial_price": "$1,449.99",
+        "discount": "16%",
+        "initial_price": "$1,049.99",
         "offer_price": "879.99",
         "root_category": "Best Buy",
         "breadcrumbs": [
@@ -87606,12 +87606,12 @@
             "https://www.bestbuy.com/site/laptop-computers/all-laptops/pcmcat138500050001.c?id=pcmcat138500050001",
             "https://www.bestbuy.com/site/all-laptops/pc-laptops/pcmcat247400050000.c?id=pcmcat247400050000"
         ],
-        "price": "$1,449.99",
+        "price": "$1,049.99",
         "sale_price": "$879.99",
         "reviews": [],
         "gtin": "0199291393271",
         "mpn": null,
-        "timestamp": "2026-10-28T12:59:01.923Z",
+        "timestamp": "2026-10-29T07:28:49.832Z",
         "input": {
             "url": "https://www.bestbuy.com/product/asus-vivobook-s16-16-oled-wuxga-copilot-pc-notebook-intel-core-ultra-7-355-16gb-ram-1tb-ssd-intel-core-matte-gray/JJGHGPVX34"
         },
@@ -87810,7 +87810,6 @@
             "UX8407AA-ZB/DUO_70 DUO Laptop",
             "Detachable Bluetooth Keyboard",
             "ASUS Pen 3.0",
-            "Zenbook Sleeve",
             "Type-C 100W AC Adapter",
             "Quick Start Guide",
             "Warranty Card"
@@ -88206,7 +88205,7 @@
         "reviews": [],
         "gtin": "0199291624870",
         "mpn": "UX8407AA-ZB/DUO_70",
-        "timestamp": "2026-10-28T19:57:58.455Z",
+        "timestamp": "2026-10-29T07:28:45.605Z",
         "input": {
             "url": "https://www.bestbuy.com/product/asus-zenbook-duo-dual-14-3k-oled-touch-laptop-intel-core-ultra-x7-358h-2026-16gb-memory-512gb-storage-copilot-pc-moher-gray/JJGHGS6VKZ/sku/6684927"
         },
@@ -88763,7 +88762,7 @@
         "reviews": [],
         "gtin": "0199291434202",
         "mpn": "H7607BA-PA/P16_1X0_32_1T",
-        "timestamp": "2026-10-28T12:47:49.525Z",
+        "timestamp": "2026-10-29T07:28:43.718Z",
         "input": {
             "url": "https://www.bestbuy.com/product/asus-proart-p16-16-4k-oled-touchscreen-laptop-nvidia-rtx-spark-n1x-20-core-2026-32gb-memory-1tb-storage-nano-black/JJGHGSJKWC"
         },
@@ -89615,8 +89614,8 @@
             }
         ],
         "release_date": "2026-01-01T00:00:00.000Z",
-        "rating": 4.8,
-        "reviews_count": 8,
+        "rating": 4.7,
+        "reviews_count": 11,
         "highlights": [
             {
                 "title": "Copilot+ PC with Windows 11 Home",
@@ -90149,7 +90148,7 @@
         ],
         "gtin": "0199291619838",
         "mpn": "UX3480QA-ZB/SE_S0",
-        "timestamp": "2026-10-28T19:58:04.649Z",
+        "timestamp": "2026-10-29T07:28:38.378Z",
         "input": {
             "url": "https://www.bestbuy.com/product/asus-zenbook-14-14-2k-oled-laptop-snapdragon-x1-26-100-2026-16gb-memory-256gb-storage-copilot-pc-arctic-blue/JJGHGS6HW6/sku/6683775"
         },
@@ -90741,36 +90740,19 @@
         "model": "UX3407NA-ZB/A14_E0",
         "sku": "13100478",
         "upc": "199291434516",
-        "seller": {
-            "name": "PC Heaven",
-            "url": null
-        },
-        "variation": [
-            {
-                "option_values": []
-            }
-        ],
+        "seller": null,
+        "variation": null,
         "variant_id": "JJGHGSJZ3H",
         "product_category": "Best Buy>Computers & Tablets>Laptops>All Laptops>Windows Laptops",
         "brand": "ASUS",
         "image_url": "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/85a961a4-b16e-4177-a5de-41c3fbe4b50e.jpg",
         "availability_new": "In_stock",
-        "availability_date": "Sat, Oct 31",
+        "availability_date": null,
         "group_id": null,
-        "listing_has_variations": true,
-        "variant_attributes": [
-            {
-                "name": "Processor Model",
-                "value": "Snapdragon X2 Elite"
-            }
-        ],
-        "variants": [
-            {
-                "variant_type": "Processor Model",
-                "variant_options": []
-            }
-        ],
-        "store_name": "PC Heaven",
+        "listing_has_variations": false,
+        "variant_attributes": null,
+        "variants": null,
+        "store_name": null,
         "seller_url": "https://www.bestbuy.com/",
         "seller_privacy_policy": "https://www.bestbuy.com/site/help-topics/privacy-policy/pcmcat204400050062.c?id=pcmcat204400050062",
         "seller_tos": "https://www.bestbuy.com/site/terms-and-conditions",
@@ -90953,7 +90935,7 @@
         ],
         "gtin": "0199291434516",
         "mpn": "UX3407NA-ZB/A14_E0",
-        "timestamp": "2026-10-28T19:58:05.018Z",
+        "timestamp": "2026-10-29T07:28:38.379Z",
         "input": {
             "url": "https://www.bestbuy.com/product/asus-zenbook-a14-14-oled-2k-display-snapdragon-x2-elite-2026-16gb-memory-512gb-storage-copilot-pc-zabriskie-beige/JJGHGSJZ3H"
         },
@@ -91576,7 +91558,7 @@
         ],
         "gtin": "0199291378773",
         "mpn": "UX3405CA-ES99T",
-        "timestamp": "2026-10-28T12:48:09.075Z",
+        "timestamp": "2026-10-29T07:30:37.810Z",
         "input": {
             "url": "https://www.bestbuy.com/product/asus-zenbook-14-14-3k-oled-touch-screen-laptop-intel-core-ultra-9-285h-32gb-ram-1tb-ssd-foggy-silver/JJGHGPF87F"
         },
@@ -92373,7 +92355,7 @@
         ],
         "gtin": "0197105880443",
         "mpn": "GU605CW-G16.U95080",
-        "timestamp": "2026-10-28T12:47:46.087Z",
+        "timestamp": "2026-10-29T07:28:57.257Z",
         "input": {
             "url": "https://www.bestbuy.com/product/asus-rog-zephyrus-g16-16-oled-2-5k-240hz-gaming-laptop-intel-core-ultra-9-32gb-memory-geforce-rtx-5080-2tb-storage-eclipse-gray/JJGGLHJLTW"
         },
@@ -92930,7 +92912,7 @@
         "reviews": [],
         "gtin": "0199291707634",
         "mpn": "H7607BA-PA/P16_1X0_24_512",
-        "timestamp": "2026-10-28T19:58:07.683Z",
+        "timestamp": "2026-10-29T07:28:42.561Z",
         "input": {
             "url": "https://www.bestbuy.com/product/asus-proart-p16-16-4k-oled-touchscreen-laptop-nvidia-rtx-spark-n1x-18-core-2026-24gb-memory-512gb-storage-nano-black/JJGHGSKG3Y/sku/6686260"
         },
@@ -95249,7 +95231,7 @@
         ],
         "gtin": "0199291470606",
         "mpn": "FA608PP-TF/A16_97",
-        "timestamp": "2026-10-28T19:58:13.960Z",
+        "timestamp": "2026-10-29T07:29:44.704Z",
         "input": {
             "url": "https://www.bestbuy.com/product/asus-tuf-gaming-a16-16-165hz-fhd-gaming-laptop-amd-ryzen-9-8940hx-2025-16gb-memory-geforce-rtx-5070-512gb-storage-jaegar-gray/JJGHGSXCV8"
         },
@@ -96040,7 +96022,7 @@
         ],
         "gtin": "0199291410589",
         "mpn": "UX5406AA-ZB/S14_90",
-        "timestamp": "2026-10-28T12:48:08.505Z",
+        "timestamp": "2026-10-29T07:30:13.364Z",
         "input": {
             "url": "https://www.bestbuy.com/product/asus-zenbook-s14-14-oled-3k-touchscreen-intel-core-ultra-9-processor-2026-32gb-memory-1tb-storage-copilot-pc-scandinavian-white/JJGHGS78FR"
         },
@@ -96675,7 +96657,7 @@
         ],
         "gtin": "0199291685086",
         "mpn": "CX9406CAA-U5_16.512",
-        "timestamp": "2026-10-28T19:58:24.018Z",
+        "timestamp": "2026-10-29T07:28:32.656Z",
         "input": {
             "url": "https://www.bestbuy.com/product/asus-googlebook-14-3k-oled-touchscreen-laptop-w-gemini-intelligence-intel-core-ultra-5-325-2026-16gb-ram-512gb-ssd-dusk-ash/JJGHGST42S/sku/6686332"
         },
