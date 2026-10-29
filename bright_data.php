@@ -221,13 +221,13 @@ $headers = [
 
 $data = json_encode([
     'input' => $keywords,
-    'limit_per_input' => null
+    'limit_per_input' => 35
 ]);	
 	
 	
 	$ch = curl_init();
 
-curl_setopt($ch, CURLOPT_URL, 'https://api.brightdata.com/datasets/v3/scrape?dataset_id='.$DATASET_ID.'&notify=false&include_errors=true&type=discover_new&discover_by=keywords');
+curl_setopt($ch, CURLOPT_URL, 'https://api.brightdata.com/datasets/v3/trigger?dataset_id='.$DATASET_ID.'&notify=false&include_errors=true&type=discover_new&discover_by=keywords');
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -365,7 +365,7 @@ if (isset($products['data']) && is_array($products['data'])) {
     $products = $products['data'];
 }
 
-if (!is_array($products)) {
+if (!is_array($products) || isset($products['status'])) {
 
     die("ERROR: Product data is not an array.\n");
 }
@@ -444,7 +444,7 @@ foreach ($products as $product) {
 
     // Exclude monitors, desktops, TVs, tablets, headphones, and accessories
     $title = $product['title'] ?? $product['name'] ?? '';
-    if (preg_match('/\b(monitor|desktop|tower|all-in-one|tv|television|tablet|tablets|tab|ipad|fire|headphone|headphones|headset|earbud|earbuds|buds|watch)\b/i', (string)$title)) {
+    if (preg_match('/\b(monitor|desktop|tower|all-in-one|tv|television|tablet|tablets|tab|ipad|fire|headphone|headphones|headset|earbud|earbuds|buds|watch)\b/i', (string)$title) || str_contains(strtolower((string)($product['url'] ?? '')), 'openbox')) {
         continue;
     }
 

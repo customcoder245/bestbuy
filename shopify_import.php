@@ -424,7 +424,7 @@ foreach ($jsonData as $item) {
     }
 
     // Exclude monitors, desktop towers, tablets, headphones, and accessories
-    if (preg_match($excludedPatterns, $item['title'])) {
+    if (preg_match($excludedPatterns, $item['title']) || str_contains(strtolower((string)($item['url'] ?? '')), 'openbox')) {
         continue;
     }
 
@@ -852,7 +852,7 @@ if (!$isDryRun) {
     $storeBbByBrand = ['dell' => [], 'lenovo' => [], 'hp' => [], 'msi' => [], 'asus' => []];
     $checkCursor = null;
     do {
-        $q = 'query getBbProds($after: String) { products(first: 250, after: $after, query: "product_type:Bestbuy") { edges { cursor node { id title vendor createdAt } } pageInfo { hasNextPage } } }';
+        $q = 'query getBbProds($after: String) { products(first: 250, after: $after, query: "product_type:Bestbuy") { edges { cursor node { id title vendor createdAt updatedAt } } pageInfo { hasNextPage } } }';
         $r = shopifyGraphQL($q, ['after' => $checkCursor]);
         $edges = $r['data']['products']['edges'] ?? [];
         foreach ($edges as $e) {
@@ -874,7 +874,7 @@ if (!$isDryRun) {
         logMsg("   => Brand " . strtoupper($b) . ": $bCount products in Shopify");
         if ($bCount > $maxPerBrand) {
             // Sort by createdAt descending (keep newest 30, delete oldest excess)
-            usort($items, fn($a, $bItem) => strcmp($bItem['createdAt'] ?? '', $a['createdAt'] ?? ''));
+            usort($items, fn($a, $bItem) => strcmp($bItem['updatedAt'] ?? $bItem['createdAt'] ?? '', $a['updatedAt'] ?? $a['createdAt'] ?? ''));
             $excess = array_slice($items, $maxPerBrand);
             foreach ($excess as $exProd) {
                 logMsg("   => Deleting excess product beyond 30 quota: [{$exProd['vendor']}] {$exProd['title']}");
